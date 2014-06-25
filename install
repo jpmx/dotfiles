@@ -7,9 +7,8 @@ mkdir -p "$HOME/.dotfiles_backup"
 
 safe_copy() {
   echo -n "$HOME/.$1 - copying..." 
-  [ -f "$HOME/.$1" ] && mv -f "$HOME/.$1" "$HOME/.dotfiles_backup" && echo " [saved backup]"
+  [ -f "$HOME/.$1" ] && mv -f "$HOME/.$1" "$HOME/.dotfiles_backup" && echo " [saved backup]" || echo
   cp -f "$HOME/.dotfiles/$1" "$HOME/.$1"
-  echo
 }
 unsafe_copy() {
   [ -f "$HOME/$1" ] && echo "$HOME/$1 already exists - skipping file" && return 1

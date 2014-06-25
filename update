@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-GITREPO="https://github.com/jpmx/dotfiles"
+GITREPO="https://github.com/jpmx/dotfiles.git"
 cd "$(dirname "${BASH_SOURCE[0]}")"
 SCRIPT_DIR="$(pwd -P)"
 SCRIPT_NAME="$(dirname "${BASH_SOURCE[0]}")"
