@@ -11,7 +11,8 @@ safe_copy() {
   cp -f "$HOME/.dotfiles/$1" "$HOME/.$1"
 }
 unsafe_copy() {
-  [ -f "$HOME/$1" ] && echo "$HOME/$1 already exists - skipping file" && return 1
+  [ -f "$HOME/.$1" ] && echo "$HOME/.$1 already exists - skipping file" && return 1
+  echo -n "$HOME/.$1 - copying"
   cp -f "$HOME/.dotfiles/$1" "$HOME/.$1" && return 0
 }
 
@@ -25,10 +26,8 @@ done
 for dotfile in ${DOTFILES_UNSAFE[@]}; do
   unsafe_copy $dotfile
 done
-
 echo
-echo
-echo "Dotfiles on $HOME/.dotfiles"
-echo "Backup files on $HOME/.dotfiles_backup"
+echo "New dotfiles on $HOME/.dotfiles"
+echo "Backup of your dotfiles on $HOME/.dotfiles_backup"
 echo
 echo "All done. Close and restart your terminal"
