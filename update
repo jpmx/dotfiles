@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+GITREPO="https://github.com/jpmx/dotfiles"
+cd "$(dirname "${BASH_SOURCE[0]}")"
+SCRIPT_DIR="$(pwd -P)"
+SCRIPT_NAME="$(dirname "${BASH_SOURCE[0]}")"
+cd /tmp
+[ ! "$HOME" ] && { echo "Missing \$HOME env variable"; exit 1; }
+TEMP=$(mktemp -d)
+git clone "$GITREPO" "$TEMP" || { echo "Error downloading dotfiles from $GITREPO"; exit 1; }
+rm -Rf "$HOME/.dotfiles"
+mv -f "$TEMP" "$HOME/.dotfiles"
+"$HOME/.dotfiles/install"

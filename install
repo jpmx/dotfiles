@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+[ ! "$HOME" ] && { echo "Missing \$HOME env variable"; exit 1; }
+
+# Create backup dir
+rm -Rf "$HOME/.dotfiles_backup"
+mkdir -p "$HOME/.dotfiles_backup"
+
+safe_copy() {
+  echo "Copying: $1"
+  [ -f "$HOME/.$1" ] && mv -f "$HOME/.$1" "$HOME/.dotfiles_backup"
+  cp -f "$HOME/.dotfiles/$1" "$HOME/.$1"
+}
+unsafe_copy() {
+  [ -f "$HOME/$1" ] && echo "Already exists: $1" && return 1
+  cp -f "$HOME/.dotfiles/$1" "$HOME/" && return 0
+}
+
+DOTFILES_SAFE=( bashrc bash_profile gitignore_global inputrc vimrc )
+DOTFILES_UNSAFE=( bash_apikeys gitconfig )
+
+## Install
+for dotfile in ${DOTFILES_SAFE[@]}; do
+  safe_copy $dotfile
+done
+for dotfile in ${DOTFILES_UNSAFE[@]}; do
+  unsafe_copy $dotfile
+done
+
+echo
+echo
+echo "Dotfiles on $HOME/.dotfiles"
+echo "Backup files on $HOME/.dotfiles_backup"
+echo
+echo "All done. Close and restart your terminal"

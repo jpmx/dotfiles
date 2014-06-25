@@ -1,0 +1,78 @@
+
+# Filename matching and completion in a case-insensitive fashion
+set completion-ignore-case on
+
+# Words which have more than one possible completion cause the matches to be listed immediately
+set show-all-if-ambiguous on
+
+# Completed names which are symbolic links to directories have a slash appended
+set mark-symlinked-directories on
+
+# Allow eight-bit input and output
+set meta-flag on
+set input-meta on
+set output-meta on
+
+# If 'on' readline will convert characters with the eighth bit set 
+# to an ASCII key sequence by stripping the eighth bit and prefixing an ESC character
+set convert-meta off
+
+# Do not autocomplete hidden files unless the pattern explicitly begins with a dot
+set match-hidden-files off
+
+# Show all autocomplete results at once
+set page-completions off
+
+# Disable the terminal echoes ^C after Ctrl+C is pressed
+set echo-control-characters off
+
+# The number of possible completions that determines when the user 
+# is asked whether the list of possibilities should be displayed
+set completion-query-items 200
+
+# Readline does not insert characters from the completion that match
+# characters after point in the word being completed, so portions 
+# of the word following the cursor are not duplicated
+set skip-completed-text on
+
+# Be more intelligent when autocompleting by also looking at the text after
+# the cursor. For example, when the current line is "cd ~/src/mozil", and
+# the cursor is on the "z", pressing Tab will not autocomplete it to "cd
+# ~/src/mozillail", but to "cd ~/src/mozilla". (This is supported by the
+# Readline used by Bash 4.)
+set skip-completed-text on
+
+
+# Key remap
+"\e[1~": beginning-of-line
+"\e[4~": end-of-line
+“\e[5~”: history-search-backward
+“\e[6~”: history-search-forward
+"\e[3~": delete-char
+"\e[2~": quoted-insert
+"\e[5C": forward-word
+"\e[5D": backward-word
+"\e\e[C": forward-word
+"\e\e[D": backward-word
+"\e[1;5D": backward-word
+"\e[1;5C": forward-word
+
+set expand-tilde on
+set visible-stats on
+set -o vi
+
+
+# Search backward through the history for the string of characters 
+# between the start of the current line and the point
+# "\e[A": history-search-backward
+
+# Search forward through the history for the string of characters 
+# between the start of the current line and the point
+# "\e[B": history-search-forward
+
+# these are for vi-insert mode
+set keymap vi-insert
+#"\e[A": history-search-backward
+# "\e[B": history-se
+
+TAB: menu-complete
