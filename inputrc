@@ -42,37 +42,23 @@ set skip-completed-text on
 # Readline used by Bash 4.)
 set skip-completed-text on
 
-
 # Key remap
-"\e[1~": beginning-of-line
-"\e[4~": end-of-line
-“\e[5~”: history-search-backward
-“\e[6~”: history-search-forward
-"\e[3~": delete-char
-"\e[2~": quoted-insert
-"\e[5C": forward-word
-"\e[5D": backward-word
-"\e\e[C": forward-word
-"\e\e[D": backward-word
 "\e[1;5D": backward-word
 "\e[1;5C": forward-word
 
-set expand-tilde on
-set visible-stats on
-set -o vi
-
-
 # Search backward through the history for the string of characters 
 # between the start of the current line and the point
-# "\e[A": history-search-backward
+"\e[A": history-search-backward
 
 # Search forward through the history for the string of characters 
 # between the start of the current line and the point
-# "\e[B": history-search-forward
+"\e[B": history-search-forward
 
-# these are for vi-insert mode
-set keymap vi-insert
-#"\e[A": history-search-backward
-# "\e[B": history-se
+# Completed dir names have a slash appended
+set visible-stats on
 
+# Default vi mode
+set -o vi
+
+# Show menu-complete on tab
 TAB: menu-complete

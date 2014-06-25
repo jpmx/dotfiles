@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 #
 # bash_profile is used ONLY on interactive sessions
 #
@@ -52,7 +54,7 @@ export GIT_EDITOR="vim"
 export PS1="\[\e[32m\][\u@BSD-Unix \[\e[33m\]\W\[\e[32m\] \W$(__git_ps1 " (%s)")]# \[\e[0m\]"
 
 # Load Git prompt
-if [ -d $HOME/.dotfiles ] && [ -f $HOME/.dotfiles/git_prompt.sh ]; then
+if [ -d "$HOME/.dotfiles" ] && [ -f "$HOME/.dotfiles/git_prompt.sh" ]; then
   . "$HOME/.dotfiles/git_prompt.sh"
   export GIT_PS1_SHOWDIRTYSTATE=1
   export PS1='\[\e[32m\][\u@BSD-Unix \[\e[33m\]\W$(__git_ps1 " (%s)")\[\e[32m\]]# \[\e[0m\]'

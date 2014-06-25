@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 #
 # bashrc is loaded on all bash sessions (interactive and non-interactive)
 #
@@ -16,7 +18,7 @@ export PATH="/usr/local/sbin:/usr/local/bin:$PATH"
 [ "$HOME" ] && [ -d "$HOME/bin" ] && export PATH="$HOME/bin:$PATH"
 
 # Check if we have brew
-which brew >/dev/null && export BREW_PREFIX="$(brew --prefix)"
+which brew >/dev/null 2>&1 && export BREW_PREFIX="$(brew --prefix)"
 
 # Setup and load nvm
 [ "$BREW_PREFIX" ] && [ -f "$BREW_PREFIX/opt/nvm/nvm.sh" ] && . "$BREW_PREFIX/opt/nvm/nvm.sh"
