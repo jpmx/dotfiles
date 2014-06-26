@@ -55,8 +55,8 @@ export PS1="\[\e[32m\][\u@BSD-Unix \[\e[33m\]\W\[\e[32m\] \W$(__git_ps1 " (%s)")
 
 # Load Git prompt
 if [ -d "$HOME/.dotfiles" ] && [ -f "$HOME/.dotfiles/git_prompt.sh" ]; then
-  . "$HOME/.dotfiles/git_prompt.sh"
   export GIT_PS1_SHOWDIRTYSTATE=1
+  . "$HOME/.dotfiles/git_prompt.sh"
   export PS1='\[\e[32m\][\u@BSD-Unix \[\e[33m\]\W$(__git_ps1 " (%s)")\[\e[32m\]]# \[\e[0m\]'
 else
   export PS1='\[\e[32m\][\u@BSD-Unix \[\e[33m\]\W\[\e[32m\]]# \[\e[0m\]'
