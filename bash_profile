@@ -51,19 +51,21 @@ export GIT_EDITOR="vim"
 # export PS1="\e[32m[\u@BSD-Unix \e[33m\W\\e[32m]# \e[0m"
 # -- tell bash that the sequence of characters should not be counted in the prompt's length
 # -- using \[ and \]
-export PS1="\[\e[32m\][\u@BSD-Unix \[\e[33m\]\W\[\e[32m\] \W]# \[\e[0m\]"
+export PS1='\[\e[32m\][\u@BSD-Unix \[\e[33m\]\W\[\e[32m\]]# \[\e[0m\]'
 
 # Load git-prompt
 if [ -f "$HOME/.dotfiles/packages/git-completion/git-prompt.sh" ]; then
-      . "$HOME/.dotfiles/packages/git-completion/git-prompt.sh"
-  export PROMPT_COMMAND='__git_ps1 "\u@\h:\w" "\\\$ "'
-  # export PS1="\[\e[32m\][\u@BSD-Unix \[\e[33m\]\W\[\e[32m\] \W$(__git_ps1 " (%s)")]# \[\e[0m\]"
+  GIT_PS1_SHOWDIRTYSTATE=1
+  GIT_PS1_SHOWCOLORHINTS=1
+  GIT_PS1_SHOWUNTRACKEDFILES=1
+  GIT_PS1_SHOWSTASHSTATE=1
+  . "$HOME/.dotfiles/packages/git-completion/git-prompt.sh"
+  export PROMPT_COMMAND='__git_ps1 "\[\e[32m\][\u@BSD-Unix\[\e[33m\]" " \W\[\e[32m\]]# \[\e[0m\]"'
 fi
 
 # Load z
 if [ -f "$HOME/.dotfiles/packages/z/z.sh" ]; then
-      . "$HOME/.dotfiles/packages/z/z.sh"
-  [ ]
+  . "$HOME/.dotfiles/packages/z/z.sh"
 fi
 
 ################################
