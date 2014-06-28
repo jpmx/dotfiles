@@ -60,7 +60,7 @@ if [ -f "$HOME/.dotfiles/packages/git-completion/git-prompt.sh" ]; then
   GIT_PS1_SHOWUNTRACKEDFILES=1
   GIT_PS1_SHOWSTASHSTATE=1
   . "$HOME/.dotfiles/packages/git-completion/git-prompt.sh"
-  export PROMPT_COMMAND='__git_ps1 "\[\e[32m\][\u@BSD-Unix\[\e[33m\]" " \W\[\e[32m\]]# \[\e[0m\]"'
+  export PROMPT_COMMAND='__git_ps1 "\[\e[32m\][\u@BSD-Unix\[\e[0m\]" " \[\e[33m\]\W\[\e[32m\]]# \[\e[0m\]"'
 fi
 
 # Load z
