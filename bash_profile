@@ -5,13 +5,13 @@
 #
 
 # Load bashrc
-[ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"
+[ -e "$HOME/.bashrc" ] && . "$HOME/.bashrc"
 
 # Load .bash_apikeys if exists
-[ -f "$HOME/.bash_apikeys" ] && . "$HOME/.bash_apikeys"
+[ -e "$HOME/.bash_apikeys" ] && . "$HOME/.bash_apikeys"
 
 # Load bash completion
-if [ "$BREW_PREFIX" ] && [ -f "$BREW_PREFIX/etc/bash_completion" ]; then
+if [ "$BREW_PREFIX" ] && [ -e "$BREW_PREFIX/etc/bash_completion" ]; then
  . "$BREW_PREFIX/etc/bash_completion"
 fi
 
@@ -51,20 +51,28 @@ export GIT_EDITOR="vim"
 # export PS1="\e[32m[\u@BSD-Unix \e[33m\W\\e[32m]# \e[0m"
 # -- tell bash that the sequence of characters should not be counted in the prompt's length
 # -- using \[ and \]
-export PS1='\[\e[32m\][\u@BSD-Unix \[\e[33m\]\W\[\e[32m\]]# \[\e[0m\]'
+if [[ "$OSTYPE" == *'darwin'* ]]; then
+  export PS1='\[\e[32m\][\u@BSD-Unix \[\e[33m\]\W\[\e[32m\]]# \[\e[0m\]'
+else
+  export PS1='\[\e[32m\][\u@Linux \[\e[33m\]\W\[\e[32m\]]# \[\e[0m\]'
+fi
 
 # Load git-prompt
-if [ -f "$HOME/.dotfiles/packages/git-completion/git-prompt.sh" ]; then
+if [ -e "$HOME/.dotfiles/packages/git-completion/git-prompt.sh" ] && which git >/dev/null 2>&1; then
   GIT_PS1_SHOWDIRTYSTATE=1
   GIT_PS1_SHOWCOLORHINTS=1
   GIT_PS1_SHOWUNTRACKEDFILES=1
   GIT_PS1_SHOWSTASHSTATE=1
   . "$HOME/.dotfiles/packages/git-completion/git-prompt.sh"
-  export PROMPT_COMMAND='__git_ps1 "\[\e[32m\][\u@BSD-Unix\[\e[0m\]" " \[\e[33m\]\W\[\e[32m\]]# \[\e[0m\]"'
+  if [[ "$OSTYPE" == *'darwin'* ]]; then
+    export PROMPT_COMMAND='__git_ps1 "\[\e[32m\][\u@BSD-Unix\[\e[0m\]" " \[\e[33m\]\W\[\e[32m\]]# \[\e[0m\]"'
+  else
+    export PROMPT_COMMAND='__git_ps1 "\[\e[32m\][\u@Linux\[\e[0m\]" " \[\e[33m\]\W\[\e[32m\]]# \[\e[0m\]"'
+  fi
 fi
 
 # Load z
-if [ -f "$HOME/.dotfiles/packages/z/z.sh" ]; then
+if [ -e "$HOME/.dotfiles/packages/z/z.sh" ]; then
   . "$HOME/.dotfiles/packages/z/z.sh"
 fi
 
@@ -106,7 +114,7 @@ shopt -s autocd >/dev/null 2>&1
 shopt -s histappend >/dev/null 2>&1
 
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
-[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2 | tr ' ' '\n')" scp sftp ssh
+[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" "$HOME/.ssh/config" | grep -v "[?*]" | cut -d " " -f2 | tr ' ' '\n')" scp sftp ssh
 
 ################################
 # Aliases
