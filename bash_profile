@@ -4,8 +4,12 @@
 # bash_profile is used ONLY on interactive sessions
 #
 
+# Load bash_profile once
+[ "$__DF_BASH_PROFILE_LOADED" ] && return 0
+__DF_BASH_PROFILE_LOADED=true
+
 # Load bashrc
-[ -e "$HOME/.bashrc" ] && . "$HOME/.bashrc"
+[ ! "$__DF_BASHRC_LOADED" ] && [ -e "$HOME/.bashrc" ] && . "$HOME/.bashrc"
 
 # Load .bash_apikeys if exists
 [ -e "$HOME/.bash_apikeys" ] && . "$HOME/.bash_apikeys"

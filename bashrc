@@ -4,6 +4,10 @@
 # bashrc is loaded on all bash sessions (interactive and non-interactive)
 #
 
+# Load bashrc once
+[ "$__DF_BASHRC_LOADED" ] && return 0
+__DF_BASHRC_LOADED=true
+
 # Add GNU coreutils to path
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
@@ -22,3 +26,6 @@ which brew >/dev/null 2>&1 && export BREW_PREFIX="$(brew --prefix)"
 
 # Setup and load nvm
 [ "$BREW_PREFIX" ] && [ -f "$BREW_PREFIX/opt/nvm/nvm.sh" ] && . "$BREW_PREFIX/opt/nvm/nvm.sh"
+
+# Load bashrc
+[ -t 0 ] && [ ! "$__DF_BASH_PROFILE_LOADED" ] && [ -e "$HOME/.bash_profile" ] && . "$HOME/.bash_profile"
