@@ -58,7 +58,7 @@ export GIT_EDITOR="vim"
 if [[ "$OSTYPE" == *'darwin'* ]]; then
   export PS1='\[\e[32m\][\u@BSD-Unix \[\e[33m\]\W\[\e[32m\]]# \[\e[0m\]'
 else
-  export PS1='\[\e[0;33m\][\u@Linux \[\e[1;33m\]\W\[\e[0;33m\]]# \[\e[0m\]'
+  export PS1='\[\e[0;33m\][\u@\h \[\e[1;33m\]\W\[\e[0;33m\]]# \[\e[0m\]'
 fi
 
 # Load git-prompt
@@ -71,7 +71,7 @@ if [ -e "$HOME/.dotfiles/packages/git-completion/git-prompt.sh" ] && which git >
   if [[ "$OSTYPE" == *'darwin'* ]]; then
     export PROMPT_COMMAND='__git_ps1 "\[\e[32m\][\u@BSD-Unix\[\e[0m\]" " \[\e[33m\]\W\[\e[32m\]]# \[\e[0m\]"'
   else
-    export PROMPT_COMMAND='__git_ps1 "\[\e[0;33m\][\u@Linux\[\e[0m\]" " \[\e[1;33m\]\W\[\e[0;33m\]]# \[\e[0m\]"'
+    export PROMPT_COMMAND='__git_ps1 "\[\e[0;33m\][\u@\h\[\e[0m\]" " \[\e[1;33m\]\W\[\e[0;33m\]]# \[\e[0m\]"'
   fi
 fi
 
