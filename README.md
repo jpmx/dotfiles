@@ -10,7 +10,7 @@ My dotfiles
   ```
 
 
-- How to update:
+- To update run:
 
   ```bash
   ~/.dotfiles/update
