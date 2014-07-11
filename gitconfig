@@ -2,18 +2,11 @@
   helper = osxkeychain
 [push]
   default = simple
-[mergetool "Kaleidoscope"]
-  cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
-  path=/usr/local/bin
-  trustexitcode = true
-[merge]
-  tool = Kaleidoscope
-[difftool "Kaleidoscope"]
-  cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
-  path=/usr/local/bin
 [difftool]
   prompt = false
 [mergetool]
   prompt = false
 [diff]
-  tool = Kaleidoscope
+  tool = sourcetree
+[merge]
+  tool = sourcetree
