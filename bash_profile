@@ -21,7 +21,7 @@ fi
 
 # Add GNU's man pages to MANPATH
 if [ "$BREW_PREFIX" ] && [ -d "$BREW_PREFIX/opt/coreutils/libexec/gnuman" ]; then
-  export MANPATH="$BREW_PREFIX/opt/coreutils/libexec/gnuman"
+  export MANPATH="$BREW_PREFIX/opt/coreutils/libexec/gnuman:$MANPATH"
 fi
 
 ################################
@@ -138,8 +138,10 @@ alias fgrep="fgrep $CA"
 alias egrep="egrep $CA"
 
 
-################################
-# Custom user's paths
-################################
+##############################################
+# DO NOT MODIFY THIS FILE                    #
+# This file will be overwritten on an update #
+##############################################
 
+# ~/.bash_apikeys -> Put your own API Keys here (AWS, Github, etc)
 
