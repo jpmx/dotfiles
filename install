@@ -17,7 +17,7 @@ unsafe_copy() {
 }
 
 DOTFILES_SAFE=( bashrc bash_profile gitignore_global inputrc vimrc )
-DOTFILES_UNSAFE=( bash_apikeys gitconfig )
+DOTFILES_UNSAFE=( bash_apikeys )
 
 ## Install
 for dotfile in ${DOTFILES_SAFE[@]}; do
