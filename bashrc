@@ -15,6 +15,9 @@ mac_setup() {
     # Check if we have brew
     which brew >/dev/null 2>&1 && export BREW_PREFIX="$(brew --prefix)" || return
 
+    # Add brew's path
+    export PATH="/usr/local/sbin:/usr/local/bin:$PATH"
+
     # Add GNU coreutils to path
     [ -d /usr/local/opt/coreutils/libexec/gnubin ] && \
       export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
@@ -24,10 +27,9 @@ mac_setup() {
       export PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
 
     # Setup and load nvm
-    [ -f "$BREW_PREFIX/opt/nvm/nvm.sh" ] && . "$BREW_PREFIX/opt/nvm/nvm.sh"
+    [ -d ~/.nvm ] && export NVM_DIR=~/.nvm
+    [ -f "$BREW_PREFIX/opt/nvm/nvm.sh" ] &&. "$BREW_PREFIX/opt/nvm/nvm.sh"
 
-    # Add brew's path
-    export PATH="/usr/local/sbin:/usr/local/bin:$PATH"
   fi
 }
 mac_setup
