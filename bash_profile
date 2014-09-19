@@ -117,9 +117,6 @@ shopt -s autocd >/dev/null 2>&1
 # append to the history file, don't overwrite it
 shopt -s histappend >/dev/null 2>&1
 
-# Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
-[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" "$HOME/.ssh/config" | grep -v "[?*]" | cut -d " " -f2 | tr ' ' '\n')" scp sftp ssh
-
 ################################
 # Aliases
 ################################
@@ -137,6 +134,8 @@ alias grep="grep $CA"
 alias fgrep="fgrep $CA"
 alias egrep="egrep $CA"
 
+# Sencha Cmd Path
+[ -d $HOME/bin/Sencha/Cmd ] && export PATH=$HOME/bin/Sencha/Cmd/$(ls $HOME/bin/Sencha/Cmd | grep -iv '[a-z]' | sort -V | tail -n1):$PATH
 
 ##############################################
 # DO NOT MODIFY THIS FILE                    #
@@ -144,4 +143,3 @@ alias egrep="egrep $CA"
 ##############################################
 
 # ~/.bash_apikeys -> Put your own API Keys here (AWS, Github, etc)
-
