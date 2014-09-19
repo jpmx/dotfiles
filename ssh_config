@@ -1,0 +1,18 @@
+#
+# Recycle connections
+#
+ControlMaster auto
+ControlPath ~/.ssh/control/%r@%h:%p
+ControlPersist yes
+
+#
+# Config for all hosts
+#
+Host *
+  ForwardAgent=yes
+  TCPKeepAlive=no
+  ServerAliveInterval=5
+  Compression=yes
+  CompressionLevel=6
+  Cipher=aes128-ctr
+  MACs=hmac-sha1

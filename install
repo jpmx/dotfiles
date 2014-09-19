@@ -5,6 +5,13 @@
 rm -Rf "$HOME/.dotfiles_backup"
 mkdir -p "$HOME/.dotfiles_backup"
 
+# Setup .ssh default
+if [ "$(uname)" == "Darwin" ] && [ ! -f "$HOME/.ssh/config" ]; then
+  echo "$HOME/.ssh/config - copying..."
+  mkdir -p "$HOME/.ssh/control"
+  cp -f "$HOME/.dotfiles/ssh_config" "$HOME/.ssh/config"
+fi
+
 safe_copy() {
   echo -n "$HOME/.$1 - copying..." 
   [ -f "$HOME/.$1" ] && mv -f "$HOME/.$1" "$HOME/.dotfiles_backup" && echo " [saved backup]" || echo
