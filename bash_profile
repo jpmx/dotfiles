@@ -44,6 +44,8 @@ export LC_CTYPE=en_US.UTF-8
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 export HISTCONTROL=ignoredups
+export HISTSIZE=10000
+export HISTFILESIZE=10000
 
 # Default editor
 export EDITOR="vim"
