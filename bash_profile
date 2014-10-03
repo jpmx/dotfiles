@@ -135,6 +135,7 @@ alias la="ls -A"
 alias grep="grep $CA"
 alias fgrep="fgrep $CA"
 alias egrep="egrep $CA"
+alias tree="tree -C"
 
 # Sencha Cmd Path
 [ -d $HOME/bin/Sencha/Cmd ] && export PATH=$HOME/bin/Sencha/Cmd/$(ls $HOME/bin/Sencha/Cmd | grep -iv '[a-z]' | sort -V | tail -n1):$PATH
