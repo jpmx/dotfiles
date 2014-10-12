@@ -30,6 +30,11 @@ mac_setup() {
     [ -d ~/.nvm ] && export NVM_DIR=~/.nvm
     [ -f "$BREW_PREFIX/opt/nvm/nvm.sh" ] &&. "$BREW_PREFIX/opt/nvm/nvm.sh"
 
+    # perl
+    if [ -d /usr/local/lib/perl5 ]; then
+      PERL5LIB="/usr/local/lib/perl5${PERL5LIB+:}${PERL5LIB}"
+      export PERL5LIB
+    fi
   fi
 }
 mac_setup
