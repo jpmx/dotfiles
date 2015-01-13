@@ -14,6 +14,9 @@ __DF_BASH_PROFILE_LOADED=true
 # Load .bash_apikeys if exists
 [ -e "$HOME/.bash_apikeys" ] && . "$HOME/.bash_apikeys"
 
+# Detect Darwin OS
+DARWIN="" && [[ "$OSTYPE" == *'darwin'* ]] && DARWIN=true
+
 # Load bash completion
 if [ "$BREW_PREFIX" ] && [ -e "$BREW_PREFIX/etc/bash_completion" ]; then
  . "$BREW_PREFIX/etc/bash_completion"
@@ -39,7 +42,9 @@ unset MAILCHECK
 export ARCHFLAGS="-arch x86_64"
 
 # Setup locale
-export LC_CTYPE=en_US.UTF-8
+# Bash throw an internal error if localte isn't found
+TRY="$(export LC_CTYPE=en_US.UTF-8 2>&1)"
+[ "$TRY" ] && export LC_CTYPE=C || export LC_CTYPE=en_US.UTF-8
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -57,7 +62,7 @@ export GIT_EDITOR="vim"
 # export PS1="\e[32m[\u@BSD-Unix \e[33m\W\\e[32m]# \e[0m"
 # -- tell bash that the sequence of characters should not be counted in the prompt's length
 # -- using \[ and \]
-if [[ "$OSTYPE" == *'darwin'* ]]; then
+if [ "$DARWIN" ]; then
   export PS1='\[\e[32m\][\u@BSD-Unix \[\e[33m\]\W\[\e[32m\]]# \[\e[0m\]'
 else
   export PS1='\[\e[0;33m\][\u@\h \[\e[1;33m\]\W\[\e[0;33m\]]# \[\e[0m\]'
@@ -65,12 +70,12 @@ fi
 
 # Load git-prompt
 if [ -e "$HOME/.dotfiles/packages/git-completion/git-prompt.sh" ] && which git >/dev/null 2>&1; then
-  GIT_PS1_SHOWDIRTYSTATE=1
-  GIT_PS1_SHOWCOLORHINTS=1
-  GIT_PS1_SHOWUNTRACKEDFILES=1
-  GIT_PS1_SHOWSTASHSTATE=1
+  export GIT_PS1_SHOWDIRTYSTATE=1
+  export GIT_PS1_SHOWCOLORHINTS=1
+  export GIT_PS1_SHOWUNTRACKEDFILES=1
+  export GIT_PS1_SHOWSTASHSTATE=1
   . "$HOME/.dotfiles/packages/git-completion/git-prompt.sh"
-  if [[ "$OSTYPE" == *'darwin'* ]]; then
+  if [ "$DARWIN" ]; then
     export PROMPT_COMMAND='__git_ps1 "\[\e[32m\][\u@BSD-Unix\[\e[0m\]" " \[\e[33m\]\W\[\e[32m\]]# \[\e[0m\]"'
   else
     export PROMPT_COMMAND='__git_ps1 "\[\e[0;33m\][\u@\h\[\e[0m\]" " \[\e[1;33m\]\W\[\e[0;33m\]]# \[\e[0m\]"'
@@ -81,6 +86,14 @@ fi
 if [ -e "$HOME/.dotfiles/packages/z/z.sh" ]; then
   . "$HOME/.dotfiles/packages/z/z.sh"
 fi
+
+# To connect the Docker client to the Docker daemon, please set:
+if [ "$DARWIN" -a "$HOME" -a -d "$HOME/.boot2docker" ]; then
+  export DOCKER_HOST=tcp://192.168.59.103:2376
+  export DOCKER_CERT_PATH="$HOME/.boot2docker/certs/boot2docker-vm"
+  export DOCKER_TLS_VERIFY=1
+fi
+
 
 ################################
 # Terminal Hacks
@@ -136,9 +149,12 @@ alias grep="grep $CA"
 alias fgrep="fgrep $CA"
 alias egrep="egrep $CA"
 alias tree="tree -C"
+alias drm="docker rm"
+alias dps="docker ps"
 
 # Sencha Cmd Path
 [ -d $HOME/bin/Sencha/Cmd ] && export PATH=$HOME/bin/Sencha/Cmd/$(ls $HOME/bin/Sencha/Cmd | grep -iv '[a-z]' | sort -V | tail -n1):$PATH
+
 
 ##############################################
 # DO NOT MODIFY THIS FILE                    #
