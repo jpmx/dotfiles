@@ -23,7 +23,8 @@ unsafe_copy() {
   cp -f "$HOME/.dotfiles/$1" "$HOME/.$1" && return 0
 }
 
-DOTFILES_SAFE=( bashrc bash_profile gitignore_global inputrc tmux.conf )
+DOTFILES_SAFE=( bashrc bash_profile gitignore_global 
+                inputrc tmux.conf vimrc dir_colors)
 DOTFILES_UNSAFE=( bash_apikeys )
 
 ## Install
