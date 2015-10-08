@@ -82,18 +82,10 @@ if [ -e "$HOME/.dotfiles/packages/git-completion/git-prompt.sh" ] && which git >
   fi
 fi
 
-# Load z
-if [ -e "$HOME/.dotfiles/packages/z/z.sh" ]; then
-  . "$HOME/.dotfiles/packages/z/z.sh"
+# Docker env for 'png' container
+if [ "$DARWIN" ] && [ "$HOME" ] && which docker-machine >/dev/null 2>&1; then
+  eval "$(docker-machine env png 2>/dev/null)"
 fi
-
-# To connect the Docker client to the Docker daemon, please set:
-if [ "$DARWIN" -a "$HOME" -a -d "$HOME/.boot2docker" ]; then
-  export DOCKER_HOST=tcp://192.168.59.103:2376
-  export DOCKER_CERT_PATH="$HOME/.boot2docker/certs/boot2docker-vm"
-  export DOCKER_TLS_VERIFY=1
-fi
-
 
 ################################
 # Terminal Hacks
@@ -151,10 +143,6 @@ alias egrep="egrep $CA"
 alias tree="tree -C"
 alias drm="docker rm"
 alias dps="docker ps"
-
-# Sencha Cmd Path
-[ -d $HOME/bin/Sencha/Cmd ] && export PATH=$HOME/bin/Sencha/Cmd/$(ls $HOME/bin/Sencha/Cmd | grep -iv '[a-z]' | sort -V | tail -n1):$PATH
-
 
 ##############################################
 # DO NOT MODIFY THIS FILE                    #

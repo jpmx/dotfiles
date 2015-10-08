@@ -26,10 +26,6 @@ mac_setup() {
     [ -x /usr/local/opt/gnu-tar/libexec/gnubin/tar ] && \
       export PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
 
-    # Setup and load nvm
-    [ -d ~/.nvm ] && export NVM_DIR=~/.nvm
-    [ -f "$BREW_PREFIX/opt/nvm/nvm.sh" ] &&. "$BREW_PREFIX/opt/nvm/nvm.sh"
-
     # perl
     if [ -d /usr/local/lib/perl5 ]; then
       PERL5LIB="/usr/local/lib/perl5${PERL5LIB+:}${PERL5LIB}"

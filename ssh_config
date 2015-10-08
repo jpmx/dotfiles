@@ -1,14 +1,10 @@
 #
-# Recycle connections
-#
-ControlMaster auto
-ControlPath ~/.ssh/control/%r@%h:%p
-ControlPersist yes
-
-#
 # Config for all hosts
 #
 Host *
+  ControlMaster auto
+  ControlPath ~/.ssh/control/%r@%h:%p
+  ControlPersist 2h
   ForwardAgent=yes
   TCPKeepAlive=no
   ServerAliveInterval=5
