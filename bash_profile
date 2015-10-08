@@ -84,7 +84,7 @@ fi
 
 # Docker env for 'png' container
 if [ "$DARWIN" ] && [ "$HOME" ] && which docker-machine >/dev/null 2>&1; then
-  eval "$(docker-machine env png 2>/dev/null)"
+  eval "$(timeout 2 docker-machine --native-ssh env png 2>/dev/null)"
 fi
 
 ################################
