@@ -5,8 +5,8 @@
 #
 
 # Load bashrc once
-[ "$__DF_BASHRC_LOADED" ] && return 0
-__DF_BASHRC_LOADED=true
+[ "$__DF_BASHRC" ] && return 0
+export __DF_BASHRC=true
 
 # OS X Specific
 mac_setup() {
@@ -48,5 +48,5 @@ linux_setup
 # Add "$HOME/bin" to path
 [ "$HOME" ] && [ -d "$HOME/bin" ] && export PATH="$HOME/bin:$PATH"
 
-# Load bash_profile for interactive sessions
-[ -t 0 ] && [ ! "$__DF_BASH_PROFILE_LOADED" ] && [ -e "$HOME/.bash_profile" ] && . "$HOME/.bash_profile"
+# Load .bash_common for interactive sessions
+[ -t 0 ] && [ "$HOME" ] && [ ! "$__DF_BASH_COMMON" ] && [ -e "$HOME/.bash_common" ] && . "$HOME/.bash_common"

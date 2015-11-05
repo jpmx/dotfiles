@@ -2,16 +2,12 @@ My dotfiles
 ========
 
 
-- How to install:
+- How to install/update:
 
   ```bash
   git clone https://github.com/jpmx/dotfiles.git ~/.dotfiles 
   ~/.dotfiles/install
   ```
 
+- After install, edit `.bash_profile` for your custom settings/api keys, etc
 
-- To update run:
-
-  ```bash
-  ~/.dotfiles/update
-  ```
