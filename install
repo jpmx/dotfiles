@@ -20,7 +20,8 @@ safe_copy() {
 }
 
 # Install dotfiles on $HOME
-DOTFILES_SAFE=( bashrc bash_common gitignore_global inputrc tmux.conf vimrc dir_colors)
+DOTFILES_SAFE=( bashrc bash_common gitconfig gitignore_global 
+                vimrc inputrc tmux.conf vimrc dir_colors)
 for dotfile in "${DOTFILES_SAFE[@]}"; do
   safe_copy "$dotfile"
 done
