@@ -152,7 +152,7 @@ alias dps="docker ps"
 
 # .dotfiles auto update
 if [ $((RANDOM % 10)) -eq 0 ] && [ -x "$HOME/.dotfiles/auto_update" ]; then
-  nohup "$HOME/.dotfiles/auto_update" >/dev/null 2>&1 &
+  ( nohup "$HOME/.dotfiles/auto_update" >/dev/null 2>&1 & ) >/dev/null 2>&1
 fi
 
 # Load user's .bash_profile

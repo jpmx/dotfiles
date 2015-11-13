@@ -8,6 +8,7 @@ if [ $? -ne 0 ] || [ ! "$CURRENT" ]; then exit 1; fi
 
 # Check if we have a new version
 UPDATE=
-curl --max-time 3 -s -A "git/2.6.2" "https://github.com/jpmx/dotfiles.git/info/refs?service=git-upload-pack" 2>/dev/null | grep -q "$CURRENT" && UPDATE=true
+URL="https://github.com/jpmx/dotfiles.git/info/refs?service=git-upload-pack"
+! curl -m 3 -s -A "git/2.6.2" "$URL" 2>/dev/null | grep -q "$CURRENT" && UPDATE=true
 [ ! "$UPDATE" ] && exit 0
 git pull  >/dev/null 2>&1 && ./install >/dev/null 2>&1 && echo "New .dotfiles version installed"
