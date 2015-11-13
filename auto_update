@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+pushd "$(dirname "$0")" >/dev/null
+
+# Check if we have local changes
+if ! git diff-index --quiet HEAD -- >/dev/null 2>&1; then exit 0; fi
+CURRENT="$(git rev-parse HEAD)"
+if [ $? -ne 0 ] || [ ! "$CURRENT" ]; then exit 1; fi
+
+# Check if we have a new version
+UPDATE=
+curl --max-time 3 -s -A "git/2.6.2" "https://github.com/jpmx/dotfiles.git/info/refs?service=git-upload-pack" 2>/dev/null | grep -q "$CURRENT" && UPDATE=true
+[ ! "$UPDATE" ] && exit 0
+git pull  >/dev/null 2>&1 && ./install >/dev/null 2>&1 && echo "New .dotfiles version installed"
