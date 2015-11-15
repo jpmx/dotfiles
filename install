@@ -33,6 +33,7 @@ if [[ "$(uname)" =~ Darwin ]]; then
 fi
 
 # Check if .bash_profile has no values
+[ -f "$HOME/.bash_apikeys" ] && rm -f "$HOME/.bash_apikeys"
 if [ -f "$HOME/.bash_profile" ]; then
   unset HOMEBREW_GITHUB_API_TOKEN GIT_AUTHOR_NAME GIT_AUTHOR_EMAIL 
   unset GIT_COMMITTER_NAME GIT_COMMITTER_EMAIL 
