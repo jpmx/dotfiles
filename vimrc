@@ -1,8 +1,10 @@
 " This must be first, because it changes other options as side effect
 set nocompatible
 set nowrap        " don't wrap lines
+set autoindent    "
+set expandtab     "
 set tabstop=4     " a tab is four spaces
-set number        " always show line numbers
+"set number        " always show line numbers
 set shiftwidth=2  " number of spaces to use for autoindenting
 set shiftround    " use multiple of shiftwidth when indenting with '<' and '>'
 set showmatch     " set show matching parenthesis
@@ -22,7 +24,7 @@ set backspace=2
 set backspace=indent,eol,start
 
 " Start vim in insert mode
-au BufRead,BufNewFile * start
+" au BufRead,BufNewFile * start
 
 " enable filetype detection:
 filetype on
