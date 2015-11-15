@@ -11,4 +11,6 @@ UPDATE=
 URL="https://github.com/jpmx/dotfiles.git/info/refs?service=git-upload-pack"
 ! curl -m 3 -s -A "git/2.6.2" "$URL" 2>/dev/null | grep -q "$CURRENT" && UPDATE=true
 [ ! "$UPDATE" ] && exit 0
+sed -i -e 's|url = git@github.com:jpmx/dotfiles.*|url = https://github.com/jpmx/dotfiles.git|g' .git/config
 git pull  >/dev/null 2>&1 && ./install >/dev/null 2>&1 && echo "New .dotfiles version installed"
+sed -i -e 's|url = https://github.com/jpmx/dotfiles.*|url = git@github.com:jpmx/dotfiles.git|g' .git/config
