@@ -28,6 +28,7 @@ done
 
 # Copy GIT_ variable values to .gitconfig
 if [[ "$(uname)" =~ Darwin ]]; then
+  [ -f "$HOME/.bash_profile" ] && . "$HOME/.bash_profile"
   [ "$GIT_AUTHOR_NAME" ]  && git config --global user.name  "$GIT_AUTHOR_NAME"
   [ "$GIT_AUTHOR_EMAIL" ] && git config --global user.email "$GIT_AUTHOR_EMAIL"
 fi
@@ -45,6 +46,12 @@ if [ -f "$HOME/.bash_profile" ]; then
   fi
 else
   safe_copy "bash_profile"
+fi
+
+# Disable GIT_ env from profile on Linux/BSD
+if [[ ! "$(uname)" =~ Darwin ]]; then
+  sed -i 'bak' -e 's/^export GIT/#export GIT/g' "$HOME/.bash_profile"
+  rm -f "$HOME/.bash_profile.bak"
 fi
 
 # All done
