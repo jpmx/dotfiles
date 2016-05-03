@@ -4,9 +4,6 @@
 # bash_common is used ONLY on interactive sessions
 #
 
-# Reload on screen
-[ "$TERM" == "screen" ] && unset __DF_BASH_COMMON __DF_BASHRC
-
 # Load bash_common once
 [ "$__DF_BASH_COMMON" ] && return 0
 export __DF_BASH_COMMON=true
@@ -143,6 +140,7 @@ alias egrep="egrep $CA"
 alias tree="tree -C"
 alias drm="docker rm"
 alias dps="docker ps"
+alias screen='__DF_BASH_COMMON="" __DF_BASHRC="" __DF_PROFILE="" screen'
 
 ##############################################
 #                                            #

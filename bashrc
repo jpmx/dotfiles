@@ -4,9 +4,6 @@
 # bashrc is loaded on all bash sessions (interactive and non-interactive)
 #
 
-# Reload on screen
-[ "$TERM" == "screen" ] && unset __DF_BASH_COMMON __DF_BASHRC
-
 # Load bashrc once
 [ "$__DF_BASHRC" ] && return 0
 export __DF_BASHRC=true
