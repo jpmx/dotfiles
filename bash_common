@@ -5,7 +5,7 @@
 #
 
 # Reload on screen
-[ "$TERM" == "screen" ] && unset __DF_BASH_COMMON
+[ "$TERM" == "screen" ] && unset __DF_BASH_COMMON __DF_BASHRC
 
 # Load bash_common once
 [ "$__DF_BASH_COMMON" ] && return 0
