@@ -1,4 +1,5 @@
 " This must be first, because it changes other options as side effect
+set encoding=utf-8
 set nocompatible
 set nowrap        " don't wrap lines
 set autoindent    "
