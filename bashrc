@@ -40,7 +40,8 @@ linux_setup() {
   if [[ "$OSTYPE" == *'linux'* ]]; then
     [ -f /etc/bashrc ] && . /etc/bashrc
     ulimit -n 64000 >/dev/null 2>&1
-    [ -d /opt/pcel-linux ] && export PATH="/opt/pcel-linux/bin:$PATH"
+    CNAME=$(hostname -d | cut -d. -f1)
+    [ "$CNAME" ] && [ -d "/opt/${CNAME}-linux" ] && export PATH="/opt/${CNAME}-linux/bin:$PATH"
   fi
 }
 linux_setup
