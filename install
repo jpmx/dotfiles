@@ -54,6 +54,15 @@ if [[ ! "$(uname)" =~ Darwin ]]; then
   rm -f "$HOME/.bash_profile.bak"
 fi
 
+# Remove push.default=simple for old git versions
+if hash git >/dev/null 2>&1; then
+  GV=$(git --version | grep -Eo '[0-9\.]+')
+  if [ "$GV" ] && ( [[ $GV =~ ^1\.6 ]] || [[ $GV =~ ^1\.7 ]] ); then
+    git config --global --unset push.default
+    git config --global --remove-section push
+  fi
+fi
+
 # All done
 echo
 echo "New dotfiles on $HOME/.dotfiles"
