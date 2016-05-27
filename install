@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 [ ! "$HOME" ] && { echo "Missing \$HOME env variable"; exit 1; }
+cd "$(dirname "$0")" || { echo "Can't chdir into $(dirname "$0")"; exit 1; }
 
 # Create backup dir
 rm -Rf "$HOME/.dotfiles_backup"
@@ -56,8 +57,8 @@ fi
 
 # Remove push.default=simple for old git versions
 if hash git >/dev/null 2>&1; then
-  GV=$(git --version | grep -Eo '[0-9\.]+')
-  if [ "$GV" ] && [[ $GV =~ ^1\. ]]; then
+  # git status . will return error on bad config (Eg. push.default=simple not supported)
+  if ! git status . >/dev/null 2>&1; then
     git config --global --unset push.default
     git config --global --remove-section push
   fi
