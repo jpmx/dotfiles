@@ -14,4 +14,3 @@ URL="https://github.com/jpmx/dotfiles.git/info/refs?service=git-upload-pack"
 sed -i -e 's|url =.*|url = https://github.com/jpmx/dotfiles.git|g' .git/config
 git pull  >/dev/null 2>&1 && ./install >/dev/null 2>&1 && echo "New .dotfiles version installed"
 sed -i -e 's|url =.*|url = git@github.com:jpmx/dotfiles.git|g' .git/config
-  
