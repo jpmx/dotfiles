@@ -58,7 +58,7 @@ fi
 
 # Disable GIT_ env from profile on Linux/BSD
 if [[ ! "$(uname)" =~ Darwin ]]; then
-  sed -i 'bak' -e 's/^export GIT/#export GIT/g' ~/.bash_profile
+  sed -i'.bak' -e 's/^export GIT/#export GIT/g' ~/.bash_profile
   rm -f ~/.bash_profile.bak
 fi
 
