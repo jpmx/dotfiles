@@ -9,19 +9,21 @@
 export __DF_BASH_COMMON=true
 
 # Load bashrc
-[ ! "$__DF_BASHRC" ] && [ -e "$HOME/.bashrc" ] && . "$HOME/.bashrc"
+[ ! "$__DF_BASHRC" ] && [ -f ~/.bashrc ] && . ~/.bashrc
 
 # Detect Darwin OS
 DARWIN="" && [[ "$OSTYPE" == *'darwin'* ]] && DARWIN=true
 
-# Load bash completion
-if [ "$BREW_PREFIX" ] && [ -e "$BREW_PREFIX/etc/bash_completion" ]; then
- . "$BREW_PREFIX/etc/bash_completion"
-fi
+if [ "$DARWIN" ]; then
+  # Load bash completion
+  if [ "$BREW_PREFIX" ] && [ -e "$BREW_PREFIX/etc/bash_completion" ]; then
+   . "$BREW_PREFIX/etc/bash_completion"
+  fi
 
-# Add GNU's man pages to MANPATH
-if [ "$BREW_PREFIX" ] && [ -d "$BREW_PREFIX/opt/coreutils/libexec/gnuman" ]; then
-  export MANPATH="$BREW_PREFIX/opt/coreutils/libexec/gnuman:$MANPATH"
+  # Add GNU's man pages to MANPATH
+  if [ "$BREW_PREFIX" ] && [ -d "$BREW_PREFIX/opt/coreutils/libexec/gnuman" ]; then
+    export MANPATH="$BREW_PREFIX/opt/coreutils/libexec/gnuman:$MANPATH"
+  fi
 fi
 
 ################################
@@ -38,16 +40,17 @@ unset MAILCHECK
 # Set architecture flags
 export ARCHFLAGS="-arch x86_64"
 
-# Setup locale
-# Bash throw an internal error if localte isn't found
-TRY="$(export LC_CTYPE=en_US.UTF-8 2>&1)"
-[ "$TRY" ] && export LC_CTYPE=C || export LC_CTYPE=en_US.UTF-8
+# Try setup locale (wrong locate sends warning to stderr, but no error)
+TRY=$(export LC_CTYPE=en_US.UTF-8 2>&1) && export LC_CTYPE=en_US.UTF-8 >/dev/null 2>&1
+[ "$TRY" ] && TRY=$(export LC_CTYPE=C.UTF-8 2>&1) && export LC_CTYPE=C.UTF-8 >/dev/null 2>&1
+[ "$TRY" ] && TRY=$(export LC_CTYPE=C 2>&1) && export LC_CTYPE=C >/dev/null 2>&1
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 export HISTCONTROL=ignoredups
-export HISTSIZE=10000
-export HISTFILESIZE=10000
+export HISTSIZE=20000
+export HISTFILESIZE=20000
+export HISTTIMEFORMAT="%Y-%m-%d %T "
 
 # Default editor
 export EDITOR="vim"
@@ -66,22 +69,17 @@ else
 fi
 
 # Load git-prompt
-if [ -e "$HOME/.dotfiles/packages/git-completion/git-prompt.sh" ] && which git >/dev/null 2>&1; then
+if [ -f ~/.dotfiles/packages/git-completion/git-prompt.sh ] && hash git >/dev/null 2>&1; then
   export GIT_PS1_SHOWDIRTYSTATE=1
   export GIT_PS1_SHOWCOLORHINTS=1
   export GIT_PS1_SHOWUNTRACKEDFILES=1
   export GIT_PS1_SHOWSTASHSTATE=1
-  . "$HOME/.dotfiles/packages/git-completion/git-prompt.sh"
+  . ~/.dotfiles/packages/git-completion/git-prompt.sh
   if [ "$DARWIN" ]; then
     export PROMPT_COMMAND='__git_ps1 "\[\e[32m\][\u@\h\[\e[0m\]" " \[\e[33m\]\W\[\e[32m\]]# \[\e[0m\]"'
   else
     export PROMPT_COMMAND='__git_ps1 "\[\e[0;33m\][\u@\h\[\e[0m\]" " \[\e[1;33m\]\W\[\e[0;33m\]]# \[\e[0m\]"'
   fi
-fi
-
-# Docker env for 'png' container
-if [ "$DARWIN" ] && [ "$HOME" ] && which docker-machine >/dev/null 2>&1; then
-  eval "$(timeout 2 docker-machine --native-ssh env 2>/dev/null)"
 fi
 
 ################################
@@ -121,26 +119,6 @@ shopt -s autocd >/dev/null 2>&1
 # append to the history file, don't overwrite it
 shopt -s histappend >/dev/null 2>&1
 
-################################
-# Aliases
-################################
-CA="" && ls --color=auto >/dev/null 2>&1 && CA="--color=auto"
-alias rm="rm -i"
-alias cp="cp -i"
-alias mv="mv -i"
-alias ls="ls $CA"
-alias ll="ls -l"
-alias lld="ls -lUd .*/ */"
-alias l="ls -CF"
-alias l.="ls -lA"
-alias la="ls -A"
-alias grep="grep $CA"
-alias fgrep="fgrep $CA"
-alias egrep="egrep $CA"
-alias tree="tree -C"
-alias drm="docker rm"
-alias dps="docker ps"
-alias screen='__DF_BASH_COMMON="" __DF_BASHRC="" __DF_PROFILE="" screen'
 
 ##############################################
 #                                            #
@@ -152,9 +130,9 @@ alias screen='__DF_BASH_COMMON="" __DF_BASHRC="" __DF_PROFILE="" screen'
 ##############################################
 
 # .dotfiles auto update
-if [ $((RANDOM % 10)) -eq 0 ] && [ -x "$HOME/.dotfiles/auto_update" ]; then
-  ( nohup "$HOME/.dotfiles/auto_update" >/dev/null 2>&1 & ) >/dev/null 2>&1
+if [ $((RANDOM % 10)) -eq 0 ] && [ -x ~/.dotfiles/auto_update ]; then
+  ( nohup ~/.dotfiles/auto_update >/dev/null 2>&1 & ) >/dev/null 2>&1
 fi
 
 # Load user's .bash_profile
-[ ! "$__DF_PROFILE" ] && [ "$HOME" ] && [ -e "$HOME/.bash_profile" ] && . "$HOME/.bash_profile"
+[ ! "$__DF_PROFILE" ] && [ -f ~/.bash_profile ] && . ~/.bash_profile
