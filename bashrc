@@ -36,11 +36,29 @@ linux_setup() {
 }
 [[ "$OSTYPE" == *'linux'* ]] && linux_setup
 
+# Aliases
+setup_aliases() {
+  export __CA="" && ls --color=auto >/dev/null 2>&1 && export __CA="--color=auto"
+  alias rm="rm -i"
+  alias cp="cp -i"
+  alias mv="mv -i"
+  alias ls="ls $__CA"
+  alias ll="ls -l"
+  alias lld="ls -lUd .*/ */"
+  alias l="ls -CF"
+  alias l.="ls -lA"
+  alias la="ls -A"
+  alias grep="grep $__CA"
+  alias fgrep="fgrep $__CA"
+  alias egrep="egrep $__CA"
+  alias tree="tree -C"
+}
+
 # load aliases and add user's bin to path
 if [ "$(echo ~)" != "/" ]; then
   [ -d ~/bin ] && export PATH=~/bin:$PATH
   # Setup aliases on interactive terminal
-  [ -t 0 ] && [ ! "$(alias)" ] && [ -f ~/.bash_aliases ] && . ~/.bash_aliases
+  [ -t 0 ] && [ ! "$(alias)" ] && setup_aliases
   # Load .bash_common for interactive sessions
   [ -t 0 ] && [ ! "$__DF_BASH_COMMON" ] && [ -e ~/.bash_common ] && . ~/.bash_common
 fi

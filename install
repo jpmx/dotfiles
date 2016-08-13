@@ -3,7 +3,7 @@ cd "$(dirname "$0")" || { echo "Can't chdir into $(dirname "$0")"; exit 1; }
 [ ! -d "$(echo ~)" ] && { echo "Missing HOME dir: " ~; exit 1; }
 
 # Create backup dir
-rm -Rf ~/.dotfiles_backup
+rm -Rf ~/.dotfiles_backup ~/.bash_aliases
 mkdir -p ~/.dotfiles_backup
 
 # Install ~/.ssh/config on Darwin
@@ -21,7 +21,7 @@ safe_copy() {
 }
 
 # Install dotfiles on ~
-DOTFILES_SAFE=( bashrc bash_common bash_aliases gitconfig gitignore_global
+DOTFILES_SAFE=( bashrc bash_common gitconfig gitignore_global
                 vimrc inputrc tmux.conf vimrc dir_colors)
 for dotfile in "${DOTFILES_SAFE[@]}"; do
   safe_copy "$dotfile"
