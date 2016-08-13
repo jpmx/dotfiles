@@ -5,9 +5,9 @@ My dotfiles
 - How to install/update:
 
   ```bash
-  git clone https://github.com/jpmx/dotfiles.git ~/.dotfiles 
+  git clone https://github.com/jpmx/dotfiles.git ~/.dotfiles
   ~/.dotfiles/install
   ```
 
-- After install, edit `.bash_profile` for your custom settings/api keys, etc
+- Edit `$HOME/.bash_profile` for your custom settings/api keys, etc
 
