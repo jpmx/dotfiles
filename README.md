@@ -9,5 +9,5 @@ My dotfiles
   ~/.dotfiles/install
   ```
 
-- Edit `$HOME/.bash_profile` for your custom settings/api keys, etc
+- Edit `~/.bash_profile` for your custom settings/api keys, etc
 

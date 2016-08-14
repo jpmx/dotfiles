@@ -73,4 +73,5 @@ fi
 
 # All done
 unset __DF_BASHRC __DF_BASH_COMMON __DF_PROFILE
-. ~/.bashrc
+[ "$BASH_VERSION" ] && . ~/.bashrc
+exit 0

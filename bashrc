@@ -3,6 +3,9 @@
 # bashrc is loaded on all bash sessions (interactive and non-interactive)
 #
 
+# Try fix missing HOME
+[ ! "$HOME" ] && export HOME="$(printf ~ 2>/dev/null)"
+
 # OS X Specific
 mac_setup() {
   # Check if we have brew
