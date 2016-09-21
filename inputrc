@@ -13,7 +13,7 @@ set meta-flag on
 set input-meta on
 set output-meta on
 
-# If 'on' readline will convert characters with the eighth bit set 
+# If 'on' readline will convert characters with the eighth bit set
 # to an ASCII key sequence by stripping the eighth bit and prefixing an ESC character
 set convert-meta off
 
@@ -26,12 +26,12 @@ set page-completions off
 # Disable the terminal echoes ^C after Ctrl+C is pressed
 set echo-control-characters off
 
-# The number of possible completions that determines when the user 
+# The number of possible completions that determines when the user
 # is asked whether the list of possibilities should be displayed
 set completion-query-items 200
 
 # Readline does not insert characters from the completion that match
-# characters after point in the word being completed, so portions 
+# characters after point in the word being completed, so portions
 # of the word following the cursor are not duplicated
 set skip-completed-text on
 
@@ -46,19 +46,16 @@ set skip-completed-text on
 "\e[1;5D": backward-word
 "\e[1;5C": forward-word
 
-# Search backward through the history for the string of characters 
+# Search backward through the history for the string of characters
 # between the start of the current line and the point
 "\e[A": history-search-backward
 
-# Search forward through the history for the string of characters 
+# Search forward through the history for the string of characters
 # between the start of the current line and the point
 "\e[B": history-search-forward
 
 # Completed dir names have a slash appended
 set visible-stats on
-
-# Default vi mode
-set -o vi
 
 # Show menu-complete on tab
 TAB: menu-complete
