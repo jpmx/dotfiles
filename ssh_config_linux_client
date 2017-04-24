@@ -1,0 +1,16 @@
+#
+# ~/.ssh/config for Linux Clients
+#
+Host *
+  HashKnownHosts yes
+  PubkeyAuthentication yes
+  ChallengeResponseAuthentication no
+  ForwardAgent=yes
+  TCPKeepAlive=no
+  ServerAliveInterval=5
+  Compression=yes
+  CompressionLevel=6
+  SendEnv GIT_*
+  ControlMaster auto
+  ControlPath ~/.ssh/control/%r@%h:%p
+  ControlPersist 2h
