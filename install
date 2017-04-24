@@ -22,17 +22,10 @@ safe_copy() {
 
 # Install dotfiles on ~
 DOTFILES_SAFE=( bashrc bash_common gitconfig gitignore_global
-                vimrc inputrc tmux.conf vimrc dir_colors)
+                vimrc inputrc tmux.conf vimrc dir_colors screenrc)
 for dotfile in "${DOTFILES_SAFE[@]}"; do
   safe_copy "$dotfile"
 done
-
-# Disable welcome on .screenrc
-if [ -f ~/.screenrc ]; then
-  grep -q startup_message ~/.screenrc || echo "startup_message off" >>~/.screenrc
-else
-  echo "startup_message off" >>~/.screenrc
-fi
 
 # Copy GIT_ variable values to .gitconfig
 if [[ "$(uname)" =~ Darwin ]]; then
