@@ -33,8 +33,9 @@ mac_setup() {
 linux_setup() {
   [ -f /etc/bashrc ] && . /etc/bashrc
   ulimit -n 64000 >/dev/null 2>&1
-  CNAME=$(hostname -d | cut -d. -f1)
-  [ "$CNAME" ] && [ -d "/opt/${CNAME}-linux" ] && PATH="/opt/${CNAME}-linux/bin:$PATH"
+  for DPATH in /opt/*-linux/bin; do
+    PATH="$DPATH:$PATH"
+  done
 }
 [[ "$OSTYPE" == *'linux'* ]] && linux_setup
 
