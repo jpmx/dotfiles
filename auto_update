@@ -6,11 +6,24 @@ if ! git diff-index --quiet HEAD -- >/dev/null 2>&1; then exit 0; fi
 CURRENT="$(git rev-parse HEAD)"
 if [ $? -ne 0 ] || [ ! "$CURRENT" ]; then exit 1; fi
 
+IS_GIT=
+grep -q 'url = git' .git/config && IS_GIT=true
+
+# switch to https
+[ "$IS_GIT" ] && sed -i -e 's|url =.*|url = https://github.com/jpmx/dotfiles.git|g' .git/config
+
 # Check if we have a new version
 UPDATE=
 URL="https://github.com/jpmx/dotfiles.git/info/refs?service=git-upload-pack"
 ! curl -m 3 -s -A "git/2.6.2" "$URL" 2>/dev/null | grep -q "$CURRENT" && UPDATE=true
+
+# Switch back to git if not update detected
+[ "$IS_GIT" ] && [ ! "$UPDATE" ] && sed -i -e 's|url =.*|url = git@github.com:jpmx/dotfiles.git|g' .git/config
+
 [ ! "$UPDATE" ] && exit 0
-sed -i -e 's|url =.*|url = https://github.com/jpmx/dotfiles.git|g' .git/config
+
+# Pull and install new version
 git pull  >/dev/null 2>&1 && ./install >/dev/null 2>&1 && echo "New .dotfiles version installed"
-sed -i -e 's|url =.*|url = git@github.com:jpmx/dotfiles.git|g' .git/config
+
+# Switch back to git
+[ "$IS_GIT" ] && sed -i -e 's|url =.*|url = git@github.com:jpmx/dotfiles.git|g' .git/config
