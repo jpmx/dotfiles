@@ -13,6 +13,7 @@ export __DF_BASH_COMMON=true
 
 # Detect Darwin OS
 DARWIN="" && [[ "$OSTYPE" == *'darwin'* ]] && DARWIN=true
+DOCKER="" && grep -q '/docker/' /proc/1/cgroup 2>/dev/null && DOCKER=true
 
 if [ "$DARWIN" ]; then
   # Load bash completion
@@ -69,7 +70,7 @@ else
 fi
 
 # Load git-prompt
-if [ -f ~/.dotfiles/packages/git-completion/git-prompt.sh ] && hash git >/dev/null 2>&1; then
+if [ ! "$DOCKER" ] && [ -f ~/.dotfiles/packages/git-completion/git-prompt.sh ] && hash git >/dev/null 2>&1; then
   export GIT_PS1_SHOWDIRTYSTATE=1
   export GIT_PS1_SHOWCOLORHINTS=1
   export GIT_PS1_SHOWUNTRACKEDFILES=1
@@ -130,7 +131,7 @@ shopt -s histappend >/dev/null 2>&1
 ##############################################
 
 # .dotfiles auto update
-if [ $((RANDOM % 10)) -eq 0 ] && [ -x ~/.dotfiles/auto_update ]; then
+if [ ! "$DOCKER" ] && [ $((RANDOM % 10)) -eq 0 ] && [ -x ~/.dotfiles/auto_update ]; then
   ( nohup ~/.dotfiles/auto_update >/dev/null 2>&1 & ) >/dev/null 2>&1
 fi
 
