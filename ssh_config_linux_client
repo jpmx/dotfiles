@@ -9,7 +9,6 @@ Host *
   TCPKeepAlive=no
   ServerAliveInterval=5
   Compression=yes
-  CompressionLevel=6
   SendEnv GIT_*
   ControlMaster auto
   ControlPath ~/.ssh/control/%r@%h:%p

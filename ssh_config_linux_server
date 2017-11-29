@@ -9,5 +9,4 @@ Host *
   TCPKeepAlive=no
   ServerAliveInterval=5
   Compression=yes
-  CompressionLevel=6
   SendEnv GIT_*
