@@ -46,7 +46,7 @@ setup_aliases() {
   alias cp="cp -i"
   alias mv="mv -i"
   alias ls="ls $__CA"
-  alias ll="ls -l"
+  alias ll="ls -ltr"
   alias lld="ls -lUd .*/ */"
   alias l="ls -CF"
   alias l.="ls -lA"
