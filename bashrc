@@ -42,9 +42,6 @@ linux_setup() {
 # Aliases
 setup_aliases() {
   __CA="" && ls --color=auto >/dev/null 2>&1 && __CA="--color=auto"
-  alias rm="rm -i"
-  alias cp="cp -i"
-  alias mv="mv -i"
   alias ls="ls $__CA"
   alias ll="ls -ltr"
   alias lld="ls -lUd .*/ */"
@@ -61,7 +58,7 @@ setup_aliases() {
 if [ "$(echo ~)" != "/" ]; then
   [ -d ~/bin ] && PATH=~/bin:$PATH
   # Setup aliases on interactive terminal
-  [ -t 0 ] && [ ! "$(alias)" ] && setup_aliases
+  [ -t 0 ] && setup_aliases
   # Load .bash_common for interactive sessions
   [ -t 0 ] && [ ! "$__DF_BASH_COMMON" ] && [ -e ~/.bash_common ] && . ~/.bash_common
 fi
