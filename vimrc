@@ -21,8 +21,7 @@ set noswapfile
 colors desert
 
 " make backspace work like most other apps
-set backspace=4
-set backspace=indent,eol,start
+set backspace=indent,eol,start  " more powerful backspacing
 
 " Start vim in insert mode
 " au BufRead,BufNewFile * start
