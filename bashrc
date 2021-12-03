@@ -21,11 +21,6 @@ mac_setup() {
   # Add GNU's tar to path
   [ -x /usr/local/opt/gnu-tar/libexec/gnubin/tar ] && \
     PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
-
-  # perl
-  if [ -d /usr/local/lib/perl5 ]; then
-    export PERL5LIB="/usr/local/lib/perl5${PERL5LIB+:}${PERL5LIB}"
-  fi
 }
 [[ "$OSTYPE" == *'darwin'* ]] && mac_setup
 
