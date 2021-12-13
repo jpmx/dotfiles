@@ -584,3 +584,7 @@ __git_ps1 ()
 
 	return $exit
 }
+
+# Export all
+export __git_printf_supports_v
+export -f __git_ps1_show_upstream __git_ps1_colorize_gitstring __git_eread __git_sequencer_status __git_ps1
