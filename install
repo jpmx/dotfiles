@@ -11,7 +11,7 @@ if [ "$(uname)" == "Darwin" ]; then
   echo -n "$(echo ~)/.ssh/config - copying..."
   [ -f ~/.ssh/config ] && mv -f ~/.ssh/config ~/.dotfiles_backup && echo " [saved backup]" || echo
   mkdir -p ~/.ssh/control
-  cp -f ~/.dotfiles/ssh_config_darwin ~/.ssh/config
+  cp -f ~/.dotfiles/ssh_config_darwin ~/.ssh/dotfiles_ssh_config
 fi
 
 # Install ~/.ssh/config on Linux Desktop/Server
@@ -19,13 +19,20 @@ if [ "$XDG_CURRENT_DESKTOP" ] || [ "$GDMSESSION" ]; then
   echo -n "$(echo ~)/.ssh/config - copying..."
   [ -f ~/.ssh/config ] && mv -f ~/.ssh/config ~/.dotfiles_backup && echo " [saved backup]" || echo
   mkdir -p ~/.ssh/control
-  cp -f ~/".dotfiles/ssh_config_linux_client" ~/.ssh/config
+  cp -f ~/".dotfiles/ssh_config_linux_client" ~/.ssh/dotfiles_ssh_config
 elif [[ "$(uname)" == "Linux" ]]; then
   echo -n "$(echo ~)/.ssh/config - copying..."
   [ -f ~/.ssh/config ] && mv -f ~/.ssh/config ~/.dotfiles_backup && echo " [saved backup]" || echo
   mkdir -p ~/.ssh
-  cp -f ~/".dotfiles/ssh_config_linux_server" ~/.ssh/config
+  cp -f ~/".dotfiles/ssh_config_linux_server" ~/.ssh/dotfiles_ssh_config
 fi
+
+# Remove previous dotfiles versions
+grep '^# ~/.ssh/config for Darwin with stronger algorithms first' ~/.ssh/config && : > ~/.ssh/config
+grep '^# ~/.ssh/config for Linux ' ~/.ssh/config && : > ~/.ssh/config
+
+# add custom dotfiles_ssh_config
+grep 'Include dotfiles_ssh_config' ~/.ssh/config >/dev/null || echo 'Include dotfiles_ssh_config' >> ~/.ssh/config
 
 safe_copy() {
   echo -n "$(echo ~)/.$1 - copying..."
@@ -34,7 +41,7 @@ safe_copy() {
 }
 
 # Install dotfiles on ~
-DOTFILES_SAFE=( bashrc bash_common gitconfig gitignore_global
+DOTFILES_SAFE=( zshrc bashrc bash_common gitconfig gitignore_global
                 vimrc inputrc tmux.conf vimrc dir_colors screenrc)
 for dotfile in "${DOTFILES_SAFE[@]}"; do
   safe_copy "$dotfile"
@@ -98,7 +105,8 @@ if hash git >/dev/null 2>&1; then
   fi
 fi
 
-# All done
-unset __DF_BASHRC __DF_BASH_COMMON __DF_PROFILE
-[ "$BASH_VERSION" ] && . ~/.bashrc
+if [ ! -f ~/.zprofile ] || ! grep -q '^GIT_' ~/.zprofile; then
+  grep '^GIT_' ~/.bash_profile >> ~/.zprofile
+fi
+
 exit 0
