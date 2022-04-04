@@ -1,6 +1,11 @@
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
 
+# .dotfiles auto update
+if [ $((RANDOM % 10)) -eq 0 ] && [ ! -f /.dockerenv ] && [ -x ~/.dotfiles/auto_update ]; then
+  ( nohup ~/.dotfiles/auto_update >/dev/null 2>&1 & ) >/dev/null 2>&1
+fi
+
 # install and load zsh + plugins
 [ ! -d $ZSH ] && sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 D="$ZSH/custom/plugins/zsh-syntax-highlighting" && [ ! -d "$D" ] && git clone https://github.com/zsh-users/zsh-syntax-highlighting "$D"
