@@ -8,10 +8,10 @@ fi
 
 # install and load zsh + plugins
 [ ! -d $ZSH ] && sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-D="$ZSH/custom/plugins/zsh-syntax-highlighting" && [ ! -d "$D" ] && git clone https://github.com/zsh-users/zsh-syntax-highlighting "$D"
+D="$ZSH/fast-syntax-highlighting" && [ ! -d "$D" ] && git clone https://github.com/zdharma-continuum/fast-syntax-highlighting "$D"
 D="$ZSH/custom/plugins/zsh-completions" && [ ! -d "$D" ] && git clone https://github.com/zsh-users/zsh-completions "$D"
 D="$ZSH/custom/plugins/zsh-autosuggestions" && [ ! -d "$D" ] && git clone https://github.com/zsh-users/zsh-autosuggestions "$D"
-plugins=(git jump colored-man-pages zsh-autosuggestions zsh-completions zsh-syntax-highlighting)
+plugins=(git jump colored-man-pages zsh-autosuggestions zsh-completions fast-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 
 #######################################################################################################
