@@ -28,11 +28,11 @@ elif [[ "$(uname)" == "Linux" ]]; then
 fi
 
 # Remove previous dotfiles versions
-grep '^# ~/.ssh/config for Darwin with stronger algorithms first' ~/.ssh/config && : > ~/.ssh/config
-grep '^# ~/.ssh/config for Linux ' ~/.ssh/config && : > ~/.ssh/config
+grep '^# ~/.ssh/config for Darwin with stronger algorithms first' ~/.ssh/config >/dev/null 2>&1 && : > ~/.ssh/config
+grep '^# ~/.ssh/config for Linux ' ~/.ssh/config >/dev/null 2>&1 && : > ~/.ssh/config
 
 # add custom dotfiles_ssh_config
-grep 'Include dotfiles_ssh_config' ~/.ssh/config >/dev/null || echo 'Include dotfiles_ssh_config' >> ~/.ssh/config
+grep 'Include dotfiles_ssh_config' ~/.ssh/config >/dev/null 2>&1 || echo 'Include dotfiles_ssh_config' >> ~/.ssh/config
 
 safe_copy() {
   echo -n "$(echo ~)/.$1 - copying..."
