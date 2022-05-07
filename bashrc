@@ -21,6 +21,15 @@ mac_setup() {
   # Add GNU's tar to path
   [ -x /usr/local/opt/gnu-tar/libexec/gnubin/tar ] && \
     PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
+
+  # add vscode to gitconfig
+  ! grep -q 'code --wait --new-window' ~/.gitconfig && git config --global core.editor 'code --wait --new-window'
+  if ! grep -q 'tool = vscode' ~/.gitconfig; then
+      git config --global diff.tool vscode
+      git config --global difftool.vscode.cmd 'code --wait --diff $LOCAL $REMOTE'
+      git config --global merge.tool vscode
+      git config --global mergetool.vscode.cmd 'code --wait $MERGED'
+  fi
 }
 [[ "$OSTYPE" == *'darwin'* ]] && mac_setup
 

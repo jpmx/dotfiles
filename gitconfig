@@ -1,8 +1,9 @@
 [pull]
-    default = simple
-    rebase = true
+  rebase = merges
 [push]
-    default = current
+  default = current
+[rebase]
+  autostash = true
 [color]
 	diff = auto
 	status = auto
@@ -131,3 +132,9 @@
       git commit --amend -m \"$(git log -1 --pretty=%B)\n\nCloses #$1.\"; \
     fi \
   }; f"
+
+[url "git@github.com:"]
+    insteadOf = "gh:"
+    pushInsteadOf = "github:"
+    pushInsteadOf = "https://github.com/"
+    pushInsteadOf = "git://github.com/"
