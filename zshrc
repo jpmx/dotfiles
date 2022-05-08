@@ -45,11 +45,6 @@ export LC_ALL=en_US.UTF-8
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 # pipx
 [ -d "$HOME/.local/bin" ] && export PATH="$HOME/.local/bin:$PATH"
-# nvm
-if [ -d $HOME/.nvm ]; then
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"  # This loads nvm
-fi
 
 # :: Aliases and functions
 alias l="ls"
