@@ -8,21 +8,18 @@ mkdir -p ~/.dotfiles_backup
 
 # Install ~/.ssh/config on Darwin
 if [ "$(uname)" == "Darwin" ]; then
-  echo -n "$(echo ~)/.ssh/config - copying..."
-  [ -f ~/.ssh/config ] && mv -f ~/.ssh/config ~/.dotfiles_backup && echo " [saved backup]" || echo
+  echo -n "$(echo ~)/.ssh/dotfiles_ssh_config - copying..."
   mkdir -p ~/.ssh/control
   cp -f ~/.dotfiles/ssh_config_darwin ~/.ssh/dotfiles_ssh_config
 fi
 
 # Install ~/.ssh/config on Linux Desktop/Server
 if [ "$XDG_CURRENT_DESKTOP" ] || [ "$GDMSESSION" ]; then
-  echo -n "$(echo ~)/.ssh/config - copying..."
-  [ -f ~/.ssh/config ] && mv -f ~/.ssh/config ~/.dotfiles_backup && echo " [saved backup]" || echo
+  echo -n "$(echo ~)/.ssh/ssh_config_linux_client - copying..."
   mkdir -p ~/.ssh/control
   cp -f ~/".dotfiles/ssh_config_linux_client" ~/.ssh/dotfiles_ssh_config
 elif [[ "$(uname)" == "Linux" ]]; then
-  echo -n "$(echo ~)/.ssh/config - copying..."
-  [ -f ~/.ssh/config ] && mv -f ~/.ssh/config ~/.dotfiles_backup && echo " [saved backup]" || echo
+  echo -n "$(echo ~)/.ssh/ssh_config_linux_server - copying..."
   mkdir -p ~/.ssh
   cp -f ~/".dotfiles/ssh_config_linux_server" ~/.ssh/dotfiles_ssh_config
 fi
@@ -32,7 +29,11 @@ grep '^# ~/.ssh/config for Darwin with stronger algorithms first' ~/.ssh/config 
 grep '^# ~/.ssh/config for Linux ' ~/.ssh/config >/dev/null 2>&1 && : > ~/.ssh/config
 
 # add custom dotfiles_ssh_config
-grep 'Include dotfiles_ssh_config' ~/.ssh/config >/dev/null 2>&1 || echo 'Include dotfiles_ssh_config' >> ~/.ssh/config
+if ! head -n1 ~/.ssh/config | grep -q '^Include dotfiles_ssh_config' >/dev/null 2>&1; then
+  CURRENT=$(cat ~/.ssh/config 2>/dev/null)
+  echo 'Include dotfiles_ssh_config' > ~/.ssh/config
+  [ "$CURRENT" ] && echo "$CURRENT" >> ~/.ssh/config
+fi
 
 safe_copy() {
   echo -n "$(echo ~)/.$1 - copying..."
@@ -64,47 +65,34 @@ fi
 echo
 
 # Copy GIT_ variable values to .gitconfig on Desktops clients
-if [[ "$(uname)" =~ Darwin ]] || [ "$XDG_CURRENT_DESKTOP" ] || [ "$GDMSESSION" ]; then
-  [ -f ~/.bash_profile ] && . ~/.bash_profile
+if [[ "$(uname)" =~ Darwin ]]; then
   # Detect NAME on git config
   if [ ! "$GIT_AUTHOR_NAME" ] || [ ! "$GIT_COMMITTER_NAME" ]; then
     echo -n "Enter your NAME  for git commits: " && read -r GIT_AUTHOR_NAME
-    sed -i -e '/GIT_AUTHOR_NAME/d' -e '/GIT_COMMITTER_NAME/d' ~/.bash_profile
-    echo "export GIT_AUTHOR_NAME='$GIT_AUTHOR_NAME'"       >> ~/.bash_profile
-    echo "export GIT_COMMITTER_NAME='$GIT_AUTHOR_NAME'"    >> ~/.bash_profile
+    sed -i '' -e '/GIT_AUTHOR_NAME/d' -e '/GIT_COMMITTER_NAME/d' ~/.bash_profile ~/.zprofile
+    echo "export GIT_AUTHOR_NAME='$GIT_AUTHOR_NAME'"    | tee -a ~/.bash_profile ~/.zprofile >/dev/null
+    echo "export GIT_COMMITTER_NAME='$GIT_AUTHOR_NAME'" | tee -a ~/.bash_profile ~/.zprofile >/dev/null
   fi
   # Detect EMAIL on git config
   if [ ! "$GIT_AUTHOR_EMAIL" ] || [ ! "$GIT_COMMITTER_EMAIL" ]; then
     echo -n "Enter your EMAIL for git commits: " && read -r GIT_AUTHOR_EMAIL
-    sed -i -e '/GIT_AUTHOR_EMAIL/d' -e '/GIT_COMMITTER_EMAIL/d' ~/.bash_profile
-    echo "export GIT_AUTHOR_EMAIL='$GIT_AUTHOR_EMAIL'"       >> ~/.bash_profile
-    echo "export GIT_COMMITTER_EMAIL='$GIT_AUTHOR_EMAIL'"    >> ~/.bash_profile
+    sed -i '' -e '/GIT_AUTHOR_EMAIL/d' -e '/GIT_COMMITTER_EMAIL/d' ~/.bash_profile ~/.zprofile
+    echo "export GIT_AUTHOR_EMAIL='$GIT_AUTHOR_EMAIL'"    | tee -a ~/.bash_profile ~/.zprofile >/dev/null
+    echo "export GIT_COMMITTER_EMAIL='$GIT_AUTHOR_EMAIL'" | tee -a ~/.bash_profile ~/.zprofile >/dev/null
   fi
-  # Save NAME/EMAIL on git/bash_profile
-  [ -f ~/.bash_profile ] && . ~/.bash_profile
-  echo "Configuring git client on ~/.gitconfig and ~/.bash_profile with:"
-  echo "  GIT_AUTHOR_NAME    ='$GIT_AUTHOR_NAME'"
-  echo "  GIT_AUTHOR_EMAIL   ='$GIT_AUTHOR_EMAIL'"
-  echo "  GIT_COMMITTER_NAME ='$GIT_COMMITTER_NAME'"
-  echo "  GIT_COMMITTER_EMAIL='$GIT_COMMITTER_EMAIL'"
+  # Save NAME/EMAIL on git
+  [ -f ~/.bash_profile ] && eval "$(grep 'export GIT_' ~/.bash_profile)"
+  echo "Configuring git client on ~/.gitconfig:"
   [ "$GIT_AUTHOR_NAME" ]  && git config --global user.name  "$GIT_AUTHOR_NAME"
   [ "$GIT_AUTHOR_EMAIL" ] && git config --global user.email "$GIT_AUTHOR_EMAIL"
 else
   # Remove custom git names on servers
-  sed -i -e '/GIT_AUTHOR_EMAIL/d' -e '/GIT_COMMITTER_EMAIL/d' ~/.bash_profile
-  sed -i -e '/GIT_AUTHOR_NAME/d'  -e '/GIT_COMMITTER_NAME/d'  ~/.bash_profile
+  sed -i -e '/GIT_AUTHOR_EMAIL/d' -e '/GIT_COMMITTER_EMAIL/d' ~/.bash_profile ~/.zprofile >/dev/null 2>&1
+  sed -i -e '/GIT_AUTHOR_NAME/d'  -e '/GIT_COMMITTER_NAME/d'  ~/.bash_profile ~/.zprofile >/dev/null 2>&1
   git config --global --remove-section user >/dev/null 2>&1
 fi
 
-# Remove push.default=simple for old git versions
-if hash git >/dev/null 2>&1; then
-  # git status . will return error on bad config (Eg. push.default=simple not supported)
-  if ! git status . >/dev/null 2>&1; then
-    git config --global --unset push.default
-    git config --global --remove-section push
-  fi
-fi
-
+# Copy GIT config from bash to zsh
 if [ ! -f ~/.zprofile ] || ! grep -q '^GIT_' ~/.zprofile; then
   grep '^GIT_' ~/.bash_profile >> ~/.zprofile
 fi

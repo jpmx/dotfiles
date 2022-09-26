@@ -33,7 +33,7 @@ mac_setup() {
 DEV="" && [[ "$OSTYPE" == *'darwin'* ]] && mac_setup && DEV=true
 [ ! "$DEV" ] && [ -f /proc/version ] && grep -q '@Microsoft.com' /proc/version && DEV=true
 if [ "$DEV" ]; then
-    export PS1='%{$fg[green]%}$USER@%m:%{$reset_color%}%{$fg[cyan]%}%~%{$reset_color%} $(git_prompt_info)'$'\n''$ '
+    export PS1='%{$fg[green]%}$USER@%m:%{$reset_color%}%{$fg[yellow]%}%~%{$reset_color%} $(git_prompt_info)'$'\n''$ '
 else
     export PS1='%{$fg[yellow]%}$USER@%m:%{$reset_color%}%{$fg[cyan]%}%~%{$reset_color%} $(git_prompt_info)'$'\n''$ '
 fi
@@ -42,7 +42,9 @@ fi
 # env and paths
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+[ -d /usr/local/bin ]  && export PATH=/usr/local/bin:$PATH
+[ -d $HOME/bin ] && export PATH=${HOME}/bin:$PATH
+
 # pipx
 [ -d "$HOME/.local/bin" ] && export PATH="$HOME/.local/bin:$PATH"
 
