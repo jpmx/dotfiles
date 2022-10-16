@@ -1,9 +1,7 @@
 # linux bin
-for P in /opt/*-linux/bin; do export PATH="$P:$PATH"; done 2>/dev/null
+D=/opt/pcel-linux/bin && [ -d "$D" ] && export PATH="$D:$PATH"
 
 # env and paths
-[ -d /usr/local/bin ]  && export PATH=/usr/local/bin:$PATH
-[ -d $HOME/bin ] && export PATH=${HOME}/bin:$PATH
-
-# pipx
-[ -d "$HOME/.local/bin" ] && export PATH="$HOME/.local/bin:$PATH"
+D=/usr/local/bin && [ -d "$D" ] && export PATH="$D:$PATH"
+D=$HOME/bin && [ -d "$D" ] && export PATH="$D:$PATH"
+D=$HOEM/.local/bin && [ -d "$D" ] && export PATH="$D:$PATH"
