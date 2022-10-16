@@ -39,6 +39,8 @@ mac_setup() {
   CMD_NODE=$(ls /opt/homebrew/opt/nodex@*/bin/node | sort -nr | head -1) 2>/dev/null
   [ "$CMD_XNPM" ] && alias npm="$CMD_XNPM"
   [ "$CMD_NODE" ] && alias node="$CMD_NODE"
+
+  return 0
 }
 DEV="" && [[ "$OSTYPE" == *'darwin'* ]] && mac_setup && DEV=true
 [ ! "$DEV" ] && [ -f /proc/version ] && grep -q '@Microsoft.com' /proc/version && DEV=true
