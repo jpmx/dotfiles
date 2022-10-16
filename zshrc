@@ -1,3 +1,5 @@
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
 
@@ -29,6 +31,14 @@ mac_setup() {
       git config --global merge.tool vscode
       git config --global mergetool.vscode.cmd 'code --wait $MERGED'
   fi
+
+  # MacOS / Homebrew aliases
+  [ -x /opt/homebrew/bin/pip3 ]    alias pip="/opt/homebrew/bin/pip3"
+  [ -x /opt/homebrew/bin/python3 ] alias python="/opt/homebrew/bin/python3"
+  CMD_XNPM=$(ls /opt/homebrew/opt/nodex@*/bin/npm  | sort -nr | head -1) 2>/dev/null
+  CMD_NODE=$(ls /opt/homebrew/opt/nodex@*/bin/node | sort -nr | head -1) 2>/dev/null
+  [ "$CMD_XNPM" ] && alias npm="$CMD_XNPM"
+  [ "$CMD_NODE" ] && alias node="$CMD_NODE"
 }
 DEV="" && [[ "$OSTYPE" == *'darwin'* ]] && mac_setup && DEV=true
 [ ! "$DEV" ] && [ -f /proc/version ] && grep -q '@Microsoft.com' /proc/version && DEV=true
@@ -38,15 +48,6 @@ else
     export PS1='%{$fg[yellow]%}$USER@%m:%{$reset_color%}%{$fg[cyan]%}%~%{$reset_color%} $(git_prompt_info)'$'\n''$ '
 fi
 #######################################################################################################
-
-# env and paths
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-[ -d /usr/local/bin ]  && export PATH=/usr/local/bin:$PATH
-[ -d $HOME/bin ] && export PATH=${HOME}/bin:$PATH
-
-# pipx
-[ -d "$HOME/.local/bin" ] && export PATH="$HOME/.local/bin:$PATH"
 
 # :: Aliases and functions
 alias l="ls"

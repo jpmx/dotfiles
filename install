@@ -42,7 +42,7 @@ safe_copy() {
 }
 
 # Install dotfiles on ~
-DOTFILES_SAFE=( zshrc bashrc bash_common gitconfig gitignore_global
+DOTFILES_SAFE=( zshenv zshrc bashrc bash_common gitconfig gitignore_global
                 vimrc inputrc tmux.conf vimrc dir_colors screenrc)
 for dotfile in "${DOTFILES_SAFE[@]}"; do
   safe_copy "$dotfile"
