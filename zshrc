@@ -52,6 +52,10 @@ else
 fi
 #######################################################################################################
 
+# HOME bin paths
+D="$HOME/bin" && [ -d "$D" ] && export PATH="$D:$PATH"
+D="$HOME/.local/bin" && [ -d "$D" ] && export PATH="$D:$PATH"
+
 # :: Aliases and functions
 alias l="ls"
 alias ll="ls -ltr"
