@@ -40,6 +40,11 @@ linux_setup() {
   for DPATH in /opt/*-linux/bin; do
     PATH="$DPATH:$PATH"
   done
+  if [ -d "$HOME/.pyenv" ]; then
+      export PYENV_ROOT="$HOME/.pyenv"
+      command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+      eval "$(pyenv init -)"
+  fi
 }
 [[ "$OSTYPE" == *'linux'* ]] && linux_setup
 

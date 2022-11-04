@@ -43,7 +43,17 @@ mac_setup() {
 
   return 0
 }
+
+linux_setup() {
+    if [ -d "$HOME/.pyenv" ]; then
+        export PYENV_ROOT="$HOME/.pyenv"
+        command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+        eval "$(pyenv init -)"
+    fi
+}
+
 DEV="" && [[ "$OSTYPE" == *'darwin'* ]] && mac_setup && DEV=true
+[[ "$OSTYPE" == *'linux'* ]] && linux_setup
 [ ! "$DEV" ] && [ -f /proc/version ] && grep -q '@Microsoft.com' /proc/version && DEV=true
 if [ "$DEV" ]; then
     export PS1='%{$fg[green]%}$USER@%m:%{$reset_color%}%{$fg[yellow]%}%~%{$reset_color%} $(git_prompt_info)'$'\n''$ '
