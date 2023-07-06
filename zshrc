@@ -2,6 +2,7 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
+DISABLE_AUTO_UPDATE=true
 
 # .dotfiles auto update
 if [ $((RANDOM % 10)) -eq 0 ] && [ ! -f /.dockerenv ] && [ -x ~/.dotfiles/auto_update ]; then
