@@ -51,14 +51,17 @@ done
 # Check if .bash_profile has no values
 [ -f ~/.bash_apikeys ] && rm -f /.bash_apikeys
 if [ -f ~/.bash_profile ]; then
+  export OLDPATH=$PATH
   unset HOMEBREW_GITHUB_API_TOKEN GIT_AUTHOR_NAME GIT_AUTHOR_EMAIL
-  unset GIT_COMMITTER_NAME GIT_COMMITTER_EMAIL
-  eval "$(grep -E 'export [A-Z0-9_]+=' ~/.bash_profile | grep -Ev '^#|&|\|')"
+  unset GIT_COMMITTER_NAME GIT_COMMITTER_EMAIL PATH
+  eval "$(/usr/bin/grep -E 'export [A-Z0-9_]+=' ~/.bash_profile | /usr/bin/grep -Ev '^#|&|\|')"
   if [ ! "$HOMEBREW_GITHUB_API_TOKEN" ] && [ ! "$GIT_AUTHOR_NAME" ] && \
      [ ! "$GIT_AUTHOR_EMAIL" ] && [ ! "$GIT_COMMITTER_NAME" ] && \
-     [ ! "$GIT_COMMITTER_EMAIL" ]; then
+     [ ! "$GIT_COMMITTER_EMAIL" ] && [ ! "$PATH" ]; then
+     export PATH=$OLDPATH
      safe_copy "bash_profile"
   fi
+  export PATH=$OLDPATH
 else
   safe_copy "bash_profile"
 fi
