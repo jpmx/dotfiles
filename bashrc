@@ -2,12 +2,10 @@
 #
 # bashrc is loaded on all bash sessions (interactive and non-interactive)
 #
+export __DF_BASHRC=true
 
 # Try fix missing HOME
 [ ! "$HOME" ] && export HOME="$(printf ~ 2>/dev/null)"
-
-# Default PATH for *NIX
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 # OS X Specific
 mac_setup() {
@@ -30,15 +28,23 @@ mac_setup() {
       git config --global merge.tool vscode
       git config --global mergetool.vscode.cmd 'code --wait $MERGED'
   fi
+
+  # Cargo
+  [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+  
+  # FNM
+  [ ! "$FNM_MULTISHELL_PATH" ] && [ -f /opt/homebrew/bin/fnm ] && eval "$(/opt/homebrew/bin/fnm env --use-on-cd)"
 }
 [[ "$OSTYPE" == *'darwin'* ]] && mac_setup
 
 # Linux specific
 linux_setup() {
+  # Default PATH for *NIX
+  export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   [ -f /etc/bashrc ] && . /etc/bashrc
   ulimit -n 64000 >/dev/null 2>&1
   for DPATH in /opt/*-linux/bin; do
-    PATH="$DPATH:$PATH"
+    [ -d "$DPATH" ] && PATH="$DPATH:$PATH"
   done
 }
 [[ "$OSTYPE" == *'linux'* ]] && linux_setup
@@ -56,6 +62,7 @@ setup_aliases() {
   alias fgrep="fgrep $__CA"
   alias egrep="egrep $__CA"
   alias tree="tree -C"
+  alias hist="history"
 }
 
 # load aliases and add user's bin to path

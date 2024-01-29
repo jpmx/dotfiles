@@ -42,9 +42,11 @@ unset MAILCHECK
 export ARCHFLAGS="-arch x86_64"
 
 # Try setup locale (wrong locate sends warning to stderr, but no error)
-TRY=$(export LC_CTYPE=en_US.UTF-8 2>&1) && export LC_CTYPE=en_US.UTF-8 >/dev/null 2>&1
+TRY=$(export LC_CTYPE=en_US.utf-8 2>&1) && export LC_CTYPE=en_US.utf-8 >/dev/null 2>&1
 [ "$TRY" ] && TRY=$(export LC_CTYPE=C.UTF-8 2>&1) && export LC_CTYPE=C.UTF-8 >/dev/null 2>&1
 [ "$TRY" ] && TRY=$(export LC_CTYPE=C 2>&1) && export LC_CTYPE=C >/dev/null 2>&1
+export LANG=$LC_CTYPE
+export LC_ALL=$LC_CTYPE
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
