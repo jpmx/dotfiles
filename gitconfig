@@ -19,3 +19,5 @@
     pushInsteadOf = "github:"
     pushInsteadOf = "https://github.com/"
     pushInsteadOf = "git://github.com/"
+[core]
+	filemode = true
