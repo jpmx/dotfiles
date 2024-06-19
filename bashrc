@@ -65,9 +65,34 @@ setup_aliases() {
   alias hist="history"
 }
 
+###########################################################################
+# Paths
+###########################################################################
+if [ "$HOME" != "/" ]; then
+  [ -d "$HOME/bin" ] && [[ ":$PATH:" != *":$HOME/bin:"* ]] && PATH="$HOME/bin:$PATH"
+
+  # Loading pyenv
+  if [ -d "$HOME/.pyenv/bin" ] && [[ ":$PATH:" != *":$HOME/.pyenv/bin:"* ]]; then
+    export PYENV_ROOT="$HOME/.pyenv"
+    command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init -)"
+  fi
+
+  # nvm
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+  # pipx
+  if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+      export PATH="$PATH:$HOME/.local/bin"
+  fi
+fi
+
+###########################################################################
+
 # load aliases and add user's bin to path
 if [ "$(echo ~)" != "/" ]; then
-  [ -d ~/bin ] && PATH=~/bin:$PATH
   # Setup aliases on interactive terminal
   [ -t 0 ] && setup_aliases
   # Load .bash_common for interactive sessions
