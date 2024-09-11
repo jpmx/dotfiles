@@ -10,15 +10,19 @@ export __DF_BASHRC=true
 # OS X Specific
 mac_setup() {
   # Check if we have brew
-  hash brew 2>&1 && export BREW_PREFIX="$(brew --prefix)" || return
+  if [ -f /opt/homebrew/bin/brew ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  else
+    return
+  fi
 
   # Add GNU coreutils to path
-  [ -d /usr/local/opt/coreutils/libexec/gnubin ] && \
-    PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+  [ -d /opt/homebrew/opt/coreutils/libexec/gnubin ] && \
+    export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 
   # Add GNU's tar to path
-  [ -x /usr/local/opt/gnu-tar/libexec/gnubin/tar ] && \
-    PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
+  [ -x /opt/homebrew/opt/gnu-tar/libexec/gnubin/tar ] && \
+    export PATH="/opt/homebrew/opt/gnu-tar/libexec/gnubin:$PATH"
 
   # add vscode to gitconfig
   ! grep -q 'code --wait --new-window' ~/.gitconfig && git config --global core.editor 'code --wait --new-window'
@@ -77,11 +81,6 @@ if [ "$HOME" != "/" ]; then
     command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init -)"
   fi
-
-  # nvm
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
   # pipx
   if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
