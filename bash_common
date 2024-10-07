@@ -39,7 +39,7 @@ export LSCOLORS=ExFxCxDxBxegedabagacad
 unset MAILCHECK
 
 # Set architecture flags
-export ARCHFLAGS="-arch x86_64"
+export ARCHFLAGS="-arch $(uname -m)"
 
 # Try setup locale (wrong locate sends warning to stderr, but no error)
 unset LANG LC_ALL LC_CTYPE
