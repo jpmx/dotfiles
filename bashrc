@@ -75,10 +75,13 @@ setup_aliases() {
 if [ "$HOME" != "/" ]; then
   [ -d "$HOME/bin" ] && [[ ":$PATH:" != *":$HOME/bin:"* ]] && PATH="$HOME/bin:$PATH"
 
+
   # Loading pyenv
-  if [ -d "$HOME/.pyenv/bin" ] && [[ ":$PATH:" != *":$HOME/.pyenv/bin:"* ]]; then
+  if [ -d "$HOME/.pyenv" ]; then
     export PYENV_ROOT="$HOME/.pyenv"
-    command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+    if [ -d "$HOME/.pyenv/bin" ] && [[ ":$PATH:" != *":$HOME/.pyenv/bin:"* ]]; then
+      export PATH="$PYENV_ROOT/bin:$PATH"
+    fi
     eval "$(pyenv init -)"
   fi
 
