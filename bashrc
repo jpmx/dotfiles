@@ -17,8 +17,8 @@ mac_setup() {
   fi
 
   # Add GNU coreutils to path
-  [ -d /opt/homebrew/opt/coreutils/libexec/gnubin ] && \
-    export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+  [ -d /opt/homebrew/opt/coreutils/bin ] && \
+    export PATH="/opt/homebrew/opt/coreutils/bin:$PATH"
 
   # Add GNU's tar to path
   [ -x /opt/homebrew/opt/gnu-tar/libexec/gnubin/tar ] && \
