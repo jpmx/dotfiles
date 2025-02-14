@@ -50,8 +50,8 @@ TRY=$(export LC_CTYPE=en_US.utf-8 2>&1) && export LC_CTYPE=en_US.utf-8 >/dev/nul
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 export HISTCONTROL=ignoredups
-export HISTSIZE=20000
-export HISTFILESIZE=20000
+export HISTSIZE=-1
+export HISTFILESIZE=-1
 export HISTTIMEFORMAT="%Y-%m-%d %T "
 
 # Default editor
