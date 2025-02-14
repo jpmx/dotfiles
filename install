@@ -42,7 +42,7 @@ safe_copy() {
 }
 
 # Install dotfiles on ~
-DOTFILES_SAFE=( zshenv zshrc bashrc bash_common gitconfig gitignore_global
+DOTFILES_SAFE=( bashrc bash_common gitconfig gitignore_global
                 vimrc inputrc tmux.conf vimrc dir_colors screenrc)
 for dotfile in "${DOTFILES_SAFE[@]}"; do
   safe_copy "$dotfile"
@@ -93,11 +93,6 @@ else
   sed -i -e '/GIT_AUTHOR_EMAIL/d' -e '/GIT_COMMITTER_EMAIL/d' ~/.bash_profile ~/.zprofile >/dev/null 2>&1
   sed -i -e '/GIT_AUTHOR_NAME/d'  -e '/GIT_COMMITTER_NAME/d'  ~/.bash_profile ~/.zprofile >/dev/null 2>&1
   git config --global --remove-section user >/dev/null 2>&1
-fi
-
-# Copy GIT config from bash to zsh
-if [ ! -f ~/.zprofile ] || ! grep -q '^GIT_' ~/.zprofile; then
-  grep '^GIT_' ~/.bash_profile >> ~/.zprofile
 fi
 
 exit 0

@@ -70,27 +70,14 @@ setup_aliases() {
 }
 
 ###########################################################################
-# Paths
+# Add $HOME Paths
 ###########################################################################
+if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+  export PATH="$PATH:$HOME/.local/bin"
+fi
 if [ "$HOME" != "/" ]; then
   [ -d "$HOME/bin" ] && [[ ":$PATH:" != *":$HOME/bin:"* ]] && PATH="$HOME/bin:$PATH"
-
-
-  # Loading pyenv
-  if [ -d "$HOME/.pyenv" ]; then
-    export PYENV_ROOT="$HOME/.pyenv"
-    if [ -d "$HOME/.pyenv/bin" ] && [[ ":$PATH:" != *":$HOME/.pyenv/bin:"* ]]; then
-      export PATH="$PYENV_ROOT/bin:$PATH"
-    fi
-    eval "$(pyenv init -)"
-  fi
-
-  # pipx
-  if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
-      export PATH="$PATH:$HOME/.local/bin"
-  fi
 fi
-
 ###########################################################################
 
 # load aliases and add user's bin to path
