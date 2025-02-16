@@ -35,9 +35,10 @@ mac_setup() {
 
   # Cargo
   [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
-  
+
   # FNM
-  [ ! "$FNM_MULTISHELL_PATH" ] && [ -f /opt/homebrew/bin/fnm ] && eval "$(/opt/homebrew/bin/fnm env --use-on-cd)"
+  export FNM_VERSION_FILE_STRATEGY=recursive
+  [ ! "$FNM_MULTISHELL_PATH" ] && [ -f /opt/homebrew/bin/fnm ] && eval "$(/opt/homebrew/bin/fnm env)"
 }
 [[ "$OSTYPE" == *'darwin'* ]] && mac_setup
 
@@ -50,6 +51,9 @@ linux_setup() {
   for DPATH in /opt/*-linux/bin; do
     [ -d "$DPATH" ] && PATH="$DPATH:$PATH"
   done
+  # FNM
+  export FNM_VERSION_FILE_STRATEGY=recursive
+  [ ! "$FNM_MULTISHELL_PATH" ] && [ -f $HOME/.local/bin/fnm ] && eval "$($HOME/.local/bin/fnm env)"
 }
 [[ "$OSTYPE" == *'linux'* ]] && linux_setup
 
