@@ -95,4 +95,8 @@ else
   git config --global --remove-section user >/dev/null 2>&1
 fi
 
+# Install Vim Plug
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+vim -c "PlugInstall" -c "qa!"
 exit 0
