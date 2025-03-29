@@ -47,7 +47,7 @@ linux_setup() {
   # Default PATH for *NIX
   export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   [ -f /etc/bashrc ] && . /etc/bashrc
-  ulimit -n 64000 >/dev/null 2>&1
+  ulimit -n 1048576 >/dev/null 2>&1
   for DPATH in /opt/*-linux/bin; do
     [ -d "$DPATH" ] && PATH="$DPATH:$PATH"
   done
