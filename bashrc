@@ -2,7 +2,7 @@
 #
 # bashrc is loaded on all bash sessions (interactive and non-interactive)
 #
-export __DF_BASHRC=true
+__DF_BASHRC=true
 
 # Try fix missing HOME
 [ ! "$HOME" ] && export HOME="$(printf ~ 2>/dev/null)"

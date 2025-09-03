@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-export __DF_PROFILE=true && [ ! "$__DF_BASHRC" ] && [ -f ~/.bashrc ] && . ~/.bashrc
+__DF_PROFILE=true && [ ! "$__DF_BASHRC" ] && [ -f ~/.bashrc ] && . ~/.bashrc
 ###################################################################################
 #
 # Use this file for custom settings, this file is never replaced
