@@ -38,7 +38,12 @@ mac_setup() {
 
   # FNM
   export FNM_VERSION_FILE_STRATEGY=recursive
-  [ ! "$FNM_MULTISHELL_PATH" ] && [ -f /opt/homebrew/bin/fnm ] && eval "$(/opt/homebrew/bin/fnm env)"
+  if [ -n "$FNM_MULTISHELL_PATH" ] && [ -d "$FNM_MULTISHELL_PATH/bin" ]; then
+    # Sub-shell: re-inject inherited multishell bin (PATH may have been reset)
+    [[ ":$PATH:" != *":$FNM_MULTISHELL_PATH/bin:"* ]] && export PATH="$FNM_MULTISHELL_PATH/bin:$PATH"
+  elif [ -f /opt/homebrew/bin/fnm ]; then
+    eval "$(/opt/homebrew/bin/fnm env)"
+  fi
 }
 [[ "$OSTYPE" == *'darwin'* ]] && mac_setup
 
@@ -53,7 +58,13 @@ linux_setup() {
   done
   # FNM
   export FNM_VERSION_FILE_STRATEGY=recursive
-  [ ! "$FNM_MULTISHELL_PATH" ] && [ -f $HOME/.local/bin/fnm ] && eval "$($HOME/.local/bin/fnm env)"
+  if [ -n "$FNM_MULTISHELL_PATH" ] && [ -d "$FNM_MULTISHELL_PATH/bin" ]; then
+    # Sub-shell (e.g. inside screen/tmux): linux_setup reset PATH above,
+    # so re-inject the inherited multishell bin instead of re-running fnm env.
+    [[ ":$PATH:" != *":$FNM_MULTISHELL_PATH/bin:"* ]] && export PATH="$FNM_MULTISHELL_PATH/bin:$PATH"
+  elif [ -f $HOME/.local/bin/fnm ]; then
+    eval "$($HOME/.local/bin/fnm env)"
+  fi
 }
 [[ "$OSTYPE" == *'linux'* ]] && linux_setup
 
