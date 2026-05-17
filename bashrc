@@ -42,7 +42,7 @@ mac_setup() {
     # Sub-shell: re-inject inherited multishell bin (PATH may have been reset)
     [[ ":$PATH:" != *":$FNM_MULTISHELL_PATH/bin:"* ]] && export PATH="$FNM_MULTISHELL_PATH/bin:$PATH"
   elif [ -f /opt/homebrew/bin/fnm ]; then
-    eval "$(/opt/homebrew/bin/fnm env)"
+    eval "$(/opt/homebrew/bin/fnm env --use-on-cd --shell bash)"
   fi
 }
 [[ "$OSTYPE" == *'darwin'* ]] && mac_setup
@@ -62,8 +62,12 @@ linux_setup() {
     # Sub-shell (e.g. inside screen/tmux): linux_setup reset PATH above,
     # so re-inject the inherited multishell bin instead of re-running fnm env.
     [[ ":$PATH:" != *":$FNM_MULTISHELL_PATH/bin:"* ]] && export PATH="$FNM_MULTISHELL_PATH/bin:$PATH"
+  elif [ -f $HOME/.local/share/fnm/fnm ]; then
+    # Official installer location (curl -fsSL https://fnm.vercel.app/install | bash)
+    export PATH="$HOME/.local/share/fnm:$PATH"
+    eval "$(fnm env --use-on-cd --shell bash)"
   elif [ -f $HOME/.local/bin/fnm ]; then
-    eval "$($HOME/.local/bin/fnm env)"
+    eval "$($HOME/.local/bin/fnm env --use-on-cd --shell bash)"
   fi
 }
 [[ "$OSTYPE" == *'linux'* ]] && linux_setup
