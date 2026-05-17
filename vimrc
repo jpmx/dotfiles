@@ -4,8 +4,17 @@ set encoding=utf-8
 set nocompatible
 
 " Enable true colors support
-if (has("termguicolors"))
+" Dentro de screen NO activamos termguicolors: screen tiene bugs conocidos
+" con true-color + BCE que distorsionan los backgrounds. La paleta 256 de
+" onedark se ve igual y es estable.
+if (has("termguicolors")) && &term !~# '^screen' && &term !~# '^tmux'
     set termguicolors
+endif
+
+" Disable Background Color Erase: en 256-color dentro de screen/tmux, BCE
+" genera parches al scrollear. Inofensivo afuera. Defensivo.
+if &term =~# '256color' || &term =~# '^screen' || &term =~# '^tmux'
+    set t_ut=
 endif
 
 " Core editor behavior
@@ -63,12 +72,12 @@ filetype indent on
 colorscheme onedark
 
 " Force pure black background after colorscheme
-autocmd VimEnter * hi Normal guibg=#000000 ctermbg=0
-autocmd VimEnter * hi LineNr guibg=#000000 ctermbg=0
-autocmd VimEnter * hi SignColumn guibg=#000000 ctermbg=0
-autocmd VimEnter * hi VertSplit guibg=#000000 ctermbg=0
-autocmd VimEnter * hi CursorLine guibg=#000000 ctermbg=0
-autocmd VimEnter * hi CursorLineNr guibg=#000000 ctermbg=0
+autocmd VimEnter * hi Normal guibg=#000000 ctermbg=NONE
+autocmd VimEnter * hi LineNr guibg=#000000 ctermbg=NONE
+autocmd VimEnter * hi SignColumn guibg=#000000 ctermbg=NONE
+autocmd VimEnter * hi VertSplit guibg=#000000 ctermbg=NONE
+autocmd VimEnter * hi CursorLine guibg=#000000 ctermbg=NONE
+autocmd VimEnter * hi CursorLineNr guibg=#000000 ctermbg=NONE
 
 " Language-specific settings
 autocmd FileType make setlocal noexpandtab
