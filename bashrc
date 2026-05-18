@@ -44,7 +44,13 @@ mac_setup() {
       # Sub-shell: preserva multishell heredado, no re-evaluar fnm env
       [[ ":$PATH:" != *":$FNM_MULTISHELL_PATH/bin:"* ]] && export PATH="$FNM_MULTISHELL_PATH/bin:$PATH"
     else
-      eval "$(/opt/homebrew/bin/fnm env --use-on-cd --shell bash)"
+      # --use-on-cd sólo si hay al menos una versión instalada; si no, el hook
+      # cae al alias `default` y pregunta interactivamente si instalarlo.
+      if /opt/homebrew/bin/fnm list 2>/dev/null | grep -q 'v[0-9]'; then
+        eval "$(/opt/homebrew/bin/fnm env --use-on-cd --shell bash)"
+      else
+        eval "$(/opt/homebrew/bin/fnm env --shell bash)"
+      fi
     fi
   fi
 }
@@ -70,7 +76,13 @@ linux_setup() {
       # Sub-shell: preserva multishell heredado, no re-evaluar fnm env
       [[ ":$PATH:" != *":$FNM_MULTISHELL_PATH/bin:"* ]] && export PATH="$FNM_MULTISHELL_PATH/bin:$PATH"
     else
-      eval "$(fnm env --use-on-cd --shell bash)"
+      # --use-on-cd sólo si hay al menos una versión instalada; si no, el hook
+      # cae al alias `default` y pregunta interactivamente si instalarlo.
+      if "$FNM_BIN/fnm" list 2>/dev/null | grep -q 'v[0-9]'; then
+        eval "$(fnm env --use-on-cd --shell bash)"
+      else
+        eval "$(fnm env --shell bash)"
+      fi
     fi
   fi
   unset FNM_BIN
