@@ -17,7 +17,12 @@
 [url "git@github.com:"]
     insteadOf = "gh:"
     pushInsteadOf = "github:"
-    pushInsteadOf = "https://github.com/"
     pushInsteadOf = "git://github.com/"
+[url "git@github.com:pcel/"]
+    insteadOf = "https://github.com/pcel/"
+[url "git@github.com:tusite/"]
+    insteadOf = "https://github.com/tusite/"
+[url "git@github.com:nextpcel/"]
+    insteadOf = "https://github.com/nextpcel/"
 [core]
 	filemode = true

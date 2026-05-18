@@ -38,11 +38,14 @@ mac_setup() {
 
   # FNM
   export FNM_VERSION_FILE_STRATEGY=recursive
-  if [ -n "$FNM_MULTISHELL_PATH" ] && [ -d "$FNM_MULTISHELL_PATH/bin" ]; then
-    # Sub-shell: re-inject inherited multishell bin (PATH may have been reset)
-    [[ ":$PATH:" != *":$FNM_MULTISHELL_PATH/bin:"* ]] && export PATH="$FNM_MULTISHELL_PATH/bin:$PATH"
-  elif [ -f /opt/homebrew/bin/fnm ]; then
-    eval "$(/opt/homebrew/bin/fnm env --use-on-cd --shell bash)"
+  if [ -f /opt/homebrew/bin/fnm ]; then
+    [[ ":$PATH:" != *":/opt/homebrew/bin:"* ]] && export PATH="/opt/homebrew/bin:$PATH"
+    if [ -n "$FNM_MULTISHELL_PATH" ] && [ -d "$FNM_MULTISHELL_PATH/bin" ]; then
+      # Sub-shell: preserva multishell heredado, no re-evaluar fnm env
+      [[ ":$PATH:" != *":$FNM_MULTISHELL_PATH/bin:"* ]] && export PATH="$FNM_MULTISHELL_PATH/bin:$PATH"
+    else
+      eval "$(/opt/homebrew/bin/fnm env --use-on-cd --shell bash)"
+    fi
   fi
 }
 [[ "$OSTYPE" == *'darwin'* ]] && mac_setup
@@ -58,17 +61,19 @@ linux_setup() {
   done
   # FNM
   export FNM_VERSION_FILE_STRATEGY=recursive
-  if [ -n "$FNM_MULTISHELL_PATH" ] && [ -d "$FNM_MULTISHELL_PATH/bin" ]; then
-    # Sub-shell (e.g. inside screen/tmux): linux_setup reset PATH above,
-    # so re-inject the inherited multishell bin instead of re-running fnm env.
-    [[ ":$PATH:" != *":$FNM_MULTISHELL_PATH/bin:"* ]] && export PATH="$FNM_MULTISHELL_PATH/bin:$PATH"
-  elif [ -f $HOME/.local/share/fnm/fnm ]; then
-    # Official installer location (curl -fsSL https://fnm.vercel.app/install | bash)
-    export PATH="$HOME/.local/share/fnm:$PATH"
-    eval "$(fnm env --use-on-cd --shell bash)"
-  elif [ -f $HOME/.local/bin/fnm ]; then
-    eval "$($HOME/.local/bin/fnm env --use-on-cd --shell bash)"
+  FNM_BIN=""
+  [ -f "$HOME/.local/share/fnm/fnm" ] && FNM_BIN="$HOME/.local/share/fnm"
+  [ -z "$FNM_BIN" ] && [ -f "$HOME/.local/bin/fnm" ] && FNM_BIN="$HOME/.local/bin"
+  if [ -n "$FNM_BIN" ]; then
+    [[ ":$PATH:" != *":$FNM_BIN:"* ]] && export PATH="$FNM_BIN:$PATH"
+    if [ -n "$FNM_MULTISHELL_PATH" ] && [ -d "$FNM_MULTISHELL_PATH/bin" ]; then
+      # Sub-shell: preserva multishell heredado, no re-evaluar fnm env
+      [[ ":$PATH:" != *":$FNM_MULTISHELL_PATH/bin:"* ]] && export PATH="$FNM_MULTISHELL_PATH/bin:$PATH"
+    else
+      eval "$(fnm env --use-on-cd --shell bash)"
+    fi
   fi
+  unset FNM_BIN
 }
 [[ "$OSTYPE" == *'linux'* ]] && linux_setup
 
