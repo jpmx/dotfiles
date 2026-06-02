@@ -25,6 +25,7 @@ set tabstop=4     " a tab is four spaces
 set shiftwidth=4  " number of spaces for autoindenting
 set shiftround    " use multiple of shiftwidth when indenting with '<' and '>'
 set showmatch     " show matching parentheses
+set ignorecase    " ignore case
 set smartcase     " ignore case if search pattern is all lowercase
 set smarttab      " insert tabs according to shiftwidth
 set ruler         " show current row and column
@@ -33,6 +34,17 @@ set nobackup      " no backup files
 set noswapfile    " no swap files
 set nocursorline  " disable cursor line
 set background=dark
+set signcolumn=yes
+
+" Mas calidad de vida
+set hidden          " cambiar de buffer sin guardar
+set incsearch       " búsqueda incremental
+set wildmenu
+set wildmode=longest:full,full
+set laststatus=2    " airline siempre visible (en Vim 8 default es 1)
+set scrolloff=3
+set updatetime=300  " gitgutter reacciona rápido; el default de 4000ms es lentísimo
+set noshowmode
 
 " Vim-Plug initialization
 call plug#begin('~/.vim/plugged')
@@ -42,44 +54,58 @@ Plug 'tpope/vim-fugitive'
 " UI enhancements
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'luochen1990/rainbow'
 " Navigation and utility
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'gcmt/taboo.vim'
 Plug 'tpope/vim-eunuch'
 Plug 'easymotion/vim-easymotion'
-" Language support
-Plug 'plasticboy/vim-markdown'
-Plug 'joukevandermaas/vim-ember-hbs'
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
-Plug 'LnL7/vim-nix'
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
-Plug 'pearofducks/ansible-vim'
+" Markdown
+Plug 'preservim/vim-markdown'
 " Color scheme support
-Plug 'vim-scripts/AfterColors.vim'
 Plug 'joshdick/onedark.vim'
+" Elixir
+Plug 'elixir-editors/vim-elixir'
 call plug#end()
+
+" Markdown friendly
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_conceal_code_blocks = 0
+let g:vim_markdown_frontmatter = 1   " resalta frontmatter YAML, útil en prompts/notas
+
+" Para repos grandes
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+
+" SQL
+let g:sql_type_default = 'mysql'   " o 'pgsql'
+
+" Fix POSIX/bash = bash friendly
+let g:is_posix = 1
 
 " Enable syntax highlighting and filetype detection
 syntax on
-filetype on
-filetype plugin on
-filetype indent on
+filetype plugin indent on
 
-" Apply One Dark with customizations
-colorscheme onedark
+augroup vimrc_ft
+  autocmd!
+  autocmd FileType markdown,text setlocal wrap linebreak breakindent
+  autocmd BufRead,BufNewFile *.prompt setlocal filetype=markdown
+  autocmd FileType yaml setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab indentkeys-=0#
+  autocmd FileType elixir,eelixir setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
+  autocmd FileType crontab setlocal backupcopy=yes nowritebackup
+  autocmd FileType make setlocal noexpandtab
+augroup END
 
 " Force pure black background after colorscheme
-autocmd VimEnter * hi Normal guibg=#000000 ctermbg=NONE
-autocmd VimEnter * hi LineNr guibg=#000000 ctermbg=NONE
-autocmd VimEnter * hi SignColumn guibg=#000000 ctermbg=NONE
-autocmd VimEnter * hi VertSplit guibg=#000000 ctermbg=NONE
-autocmd VimEnter * hi CursorLine guibg=#000000 ctermbg=NONE
-autocmd VimEnter * hi CursorLineNr guibg=#000000 ctermbg=NONE
+augroup MyOnedarkFix
+  autocmd!
+  autocmd ColorScheme onedark
+        \  hi Normal       guibg=#000000 ctermbg=NONE
+        \| hi SignColumn   guibg=#000000 ctermbg=NONE
+        \| hi VertSplit    guibg=#000000 ctermbg=NONE
+augroup END
+colorscheme onedark
 
 " Language-specific settings
 autocmd FileType make setlocal noexpandtab
-" autocmd BufRead,BufNewFile *.zig set filetype=zig
 
