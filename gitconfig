@@ -25,8 +25,7 @@
 [diff]
     algorithm = histogram
 [merge]
-    # zdiff3 muestra la base común del conflicto. Si algún host tiene git < 2.35, usa diff3.
-    conflictStyle = zdiff3
+    conflictStyle = diff3
 [commit]
     verbose = true
 [branch]
