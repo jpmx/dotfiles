@@ -2,27 +2,71 @@
     rebase = merges
 [push]
     default = current
+    autoSetupRemote = true
 [rebase]
     autostash = true
+[rerere]
+    enabled = true
 [advice]
     statusHints = false
 [color]
     ui = true
+[column]
+    ui = auto
 [completion]
     commands = -gitk
 [fetch]
     prune = true
-[ui]
-    editor = vim
-[url "git@github.com:"]
-    insteadOf = "gh:"
-    pushInsteadOf = "github:"
-    pushInsteadOf = "git://github.com/"
-[url "git@github.com:pcel/"]
-    insteadOf = "https://github.com/pcel/"
-[url "git@github.com:tusite/"]
-    insteadOf = "https://github.com/tusite/"
-[url "git@github.com:nextpcel/"]
-    insteadOf = "https://github.com/nextpcel/"
+    # pruneTags borra tags locales ausentes en el remote al hacer fetch.
+    # Útil, pero te puede eliminar tags solo-locales o de otro remote. Actívalo a sabiendas:
+    # pruneTags = true
+[init]
+    defaultBranch = main
+[diff]
+    algorithm = histogram
+[merge]
+    # zdiff3 muestra la base común del conflicto. Si algún host tiene git < 2.35, usa diff3.
+    conflictStyle = zdiff3
+[commit]
+    verbose = true
+[branch]
+    sort = -committerdate
 [core]
-	filemode = true
+    editor = vim
+    filemode = true
+
+# ---------------------------------------------------------------------------
+# gh como credential helper para HTTPS (forma portable, sin ruta absoluta).
+# El `helper =` vacío resetea la lista para que no se cuele otro helper antes.
+#
+# Si corres git desde cron/systemd y gh NO está en /usr/bin:/bin, el arreglo
+# correcto es fijar el PATH del entorno, NO hardcodear la ruta aquí:
+#   - crontab:  PATH=/usr/local/bin:/usr/bin:/bin   (línea arriba del job)
+#   - systemd:  Environment=PATH=/usr/local/bin:/usr/bin:/bin   (en el unit)
+# Si aun así prefieres ruta absoluta, usa la real del host (command -v gh).
+# ---------------------------------------------------------------------------
+[credential "https://github.com"]
+    helper =
+    helper = !gh auth git-credential
+
+# Atajo para forzar SSH cuando tú lo pidas:
+#   git clone gh:pcel/ti
+#   git remote set-url origin gh:pcel/ti
+[url "git@github.com:"]
+    insteadOf = gh:
+
+# ---------------------------------------------------------------------------
+# Por default: TODO va por HTTPS + gh (clone, fetch, pull y PUSH). 100%
+# non-interactive, sin depender de ssh-agent ni de una llave cargada.
+#
+# Descomenta estos tres bloques SOLO si necesitas push por SSH en esas orgs
+# (p.ej. deploy keys o política de la org). Fetch/pull seguirían por HTTPS+gh,
+# pero el push exigiría ssh-agent con la llave cargada (vuelve a ser interactivo):
+#
+# [url "git@github.com:pcel/"]
+#     pushInsteadOf = https://github.com/pcel/
+# [url "git@github.com:tusite/"]
+#     pushInsteadOf = https://github.com/tusite/
+# [url "git@github.com:nextpcel/"]
+#     pushInsteadOf = https://github.com/nextpcel/
+# ---------------------------------------------------------------------------
